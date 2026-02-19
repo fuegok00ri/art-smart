@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ArtStudy — Master Art History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#0e0e18;color:#fff;min-height:100vh;line-height:1.5}
+button,a{font-family:inherit;cursor:pointer}
+a{text-decoration:none}
+
+/* ── FADE ANIM ── */
+.screen{animation:fadeUp .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HEADER ── */
+#site-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;background:rgba(14,14,24,.85);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  position:sticky;top:0;z-index:200;backdrop-filter:blur(16px);
+}
+.logo{font-family:'DM Serif Display',serif;font-size:22px;letter-spacing:.5px;color:#fff}
+.logo em{color:#e8552d;font-style:normal}
+.hdr-right{display:flex;gap:10px}
+.hdr-btn{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  border-radius:20px;color:#fff;padding:7px 15px;font-size:13px;font-weight:600;
+  transition:background .15s;
+}
+.hdr-btn:hover{background:rgba(255,255,255,.16)}
+
+/* ── HOME ── */
+#home-screen{min-height:100vh;background:#0e0e18}
+.hero{padding:56px 28px 28px;max-width:720px;margin:0 auto;text-align:center}
+.hero h1{font-family:'DM Serif Display',serif;font-size:54px;line-height:1.05;letter-spacing:-.5px;margin-bottom:12px}
+.hero h1 em{color:#e8552d;font-style:italic}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:28px}
+.overall-bar{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:16px 20px;color:#fff;max-width:400px;margin:0 auto;
+}
+.bar-label{display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;font-weight:600}
+.prog-track{height:6px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.genre-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:16px;padding:20px 28px 60px;max-width:1160px;margin:0 auto;
+}
+.genre-tile{
+  border-radius:18px;padding:22px 18px 18px;cursor:pointer;text-align:left;
+  border:2px solid transparent;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;
+}
+.genre-tile::before{
+  content:'';position:absolute;inset:0;opacity:.08;
+  background:repeating-linear-gradient(135deg,#fff 0,#fff 1px,transparent 0,transparent 8px);
+  pointer-events:none;
+}
+.genre-tile:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.45)!important}
+.genre-emoji{font-size:34px;display:block;margin-bottom:8px}
+.genre-tile-name{font-family:'DM Serif Display',serif;font-size:18px;font-weight:400;color:#fff;margin-bottom:4px}
+.genre-tile-desc{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:12px;line-height:1.5}
+.tile-prog-track{height:3px;border-radius:2px;background:rgba(255,255,255,.18);overflow:hidden;margin-bottom:5px}
+.tile-prog-fill{height:100%;border-radius:2px;transition:width .5s}
+.tile-count{font-size:11px;color:rgba(255,255,255,.7);font-weight:600}
+
+/* ── PAGE WRAP (non-home) ── */
+.page-wrap{
+  min-height:calc(100vh - 55px);display:flex;justify-content:center;align-items:flex-start;
+  padding:28px 16px 60px;
+}
+
+/* ── WHITE CARDS ── */
+.card{
+  background:#fff;border-radius:22px;width:100%;max-width:700px;
+  box-shadow:0 24px 80px rgba(0,0,0,.35);overflow:hidden;color:#16161e;
+}
+.card-pad{padding:28px 28px 0}
+.back-btn{
+  background:none;border:none;color:#888;font-size:13px;
+  font-weight:600;padding:0 0 18px;display:flex;align-items:center;gap:5px;
+}
+.back-btn:hover{color:#444;transform:none!important}
+.back-btn:hover .arrow{transform:translateX(-3px)}
+.arrow{display:inline-block;transition:transform .15s}
+
+/* ── GENRE SCREEN ── */
+.genre-hero{display:flex;align-items:flex-start;gap:18px;margin-bottom:6px}
+.genre-emoji-big{font-size:52px;line-height:1;flex-shrink:0}
+.genre-title{font-family:'DM Serif Display',serif;font-size:34px;line-height:1.1;margin-bottom:4px}
+.genre-long-desc{font-size:14px;color:#555;line-height:1.6;margin-bottom:4px}
+.period-info{
+  background:#f6f7fb;border-radius:14px;padding:16px 18px;margin:14px 0 4px;
+  border-left:4px solid #e8552d;font-size:13px;color:#333;line-height:1.65;
+}
+.period-info h3{font-size:13px;font-weight:700;color:#e8552d;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.artists-section{margin:18px 0 6px}
+.artists-section h3{font-size:13px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.artists-row{display:flex;flex-wrap:wrap;gap:8px}
+.artist-chip{
+  border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;
+  text-decoration:none;transition:opacity .15s;display:inline-flex;align-items:center;gap:5px;
+}
+.artist-chip:hover{opacity:.8}
+.artist-chip-icon{font-size:10px;opacity:.7}
+.quiz-section{padding:20px 0 28px}
+.quiz-section h2{font-size:17px;font-weight:700;margin-bottom:14px;color:#16161e}
+.quiz-list{display:flex;flex-direction:column;gap:10px}
+.quiz-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px;border-radius:14px;gap:12px;
+  border:2px solid #ebebeb;background:#fafafa;transition:border-color .15s;
+}
+.quiz-item.done{background:#fff}
+.quiz-item-title{font-weight:700;font-size:14px}
+.quiz-item-sub{font-size:12px;color:#aaa;margin-top:2px}
+.mini-track{height:4px;background:#eee;border-radius:2px;overflow:hidden;margin-top:8px}
+.mini-fill{height:100%;border-radius:2px}
+.last-score{font-size:11px;color:#666;margin-top:3px}
+.quiz-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0}
+.start-btn{
+  color:#fff;border:none;border-radius:10px;padding:9px 20px;
+  font-weight:700;font-size:13px;transition:opacity .15s;
+}
+.start-btn:hover{opacity:.85}
+.review-btn-sm{
+  background:none;border:1px solid #ccc;border-radius:10px;padding:6px 14px;
+  font-weight:600;font-size:12px;color:#666;
+}
+.review-btn-sm:hover{border-color:#888;color:#333}
+
+/* ── QUIZ SCREEN ── */
+.quiz-card{
+  background:#fff;border-radius:22px;width:100%;max-width:700px;
+  box-shadow:0 24px 80px rgba(0,0,0,.35);overflow:hidden;color:#16161e;
+}
+.quiz-topbar{
+  display:flex;align-items:center;gap:14px;padding:18px 22px 14px;
+  border-bottom:1px solid #f0f0f0;
+}
+.exit-btn{
+  border:none;border-radius:8px;padding:6px 14px;
+  font-weight:700;font-size:13px;flex-shrink:0;
+}
+.quiz-meta{display:flex;justify-content:space-between;flex:1;align-items:center}
+.quiz-title-lbl{font-weight:700;font-size:14px;color:#16161e}
+.q-num{font-size:13px;color:#aaa;font-weight:600}
+.prog-track-q{height:5px;background:#f0f0f0;overflow:hidden}
+.question-text{padding:24px 22px 16px;font-size:17px;font-weight:700;color:#16161e;line-height:1.55}
+/* artwork hint */
+.artwork-hint{
+  margin:0 22px 12px;padding:10px 14px;border-radius:10px;
+  background:#f6f7fb;border:1px solid #e0e2ea;font-size:12px;color:#555;
+  display:flex;align-items:center;gap:8px;
+}
+.artwork-hint a{color:#2563eb;font-weight:600;text-decoration:none}
+.artwork-hint a:hover{text-decoration:underline}
+.options-grid{padding:0 22px;display:flex;flex-direction:column;gap:9px}
+.opt-btn{
+  display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:12px;
+  font-size:14px;font-weight:600;text-align:left;width:100%;border:2px solid #ebebeb;
+  background:#fff;color:#16161e;transition:border-color .1s,background .1s;
+}
+.opt-btn:hover:not(:disabled){border-color:#bbb;background:#f9f9f9}
+.opt-btn.correct{background:#e9faf0!important;border-color:#22c55e!important;color:#166534!important}
+.opt-btn.wrong{background:#fef2f2!important;border-color:#ef4444!important;color:#991b1b!important}
+.opt-letter{
+  width:28px;height:28px;border-radius:50%;background:#f0f0f0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;flex-shrink:0;
+}
+.next-wrap{padding:18px 22px 22px;text-align:center}
+.feedback{margin-bottom:10px;font-size:14px;font-weight:700}
+.next-btn{
+  color:#fff;border:none;border-radius:12px;padding:13px 32px;
+  font-weight:700;font-size:15px;transition:opacity .15s;
+}
+.next-btn:hover{opacity:.88}
+
+/* ── RESULTS SCREEN ── */
+.results-card{
+  background:#fff;border-radius:22px;width:100%;max-width:700px;
+  box-shadow:0 24px 80px rgba(0,0,0,.4);overflow:hidden;color:#16161e;
+  display:flex;flex-direction:column;max-height:92vh;
+}
+.results-banner{
+  padding:32px 28px 24px;text-align:center;position:relative;overflow:hidden;
+}
+.results-banner::after{
+  content:'';position:absolute;inset:0;opacity:.06;
+  background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 9px);
+  pointer-events:none;
+}
+.grade-ring{
+  width:96px;height:96px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:48px;margin:0 auto 16px;
+  position:relative;z-index:1;
+  box-shadow:0 8px 32px rgba(0,0,0,.18);
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) .05s both;
+}
+@keyframes popIn{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.results-score-text{font-family:'DM Serif Display',serif;font-size:32px;position:relative;z-index:1;line-height:1.1}
+.results-sub{font-size:14px;color:rgba(255,255,255,.7);margin-top:5px;position:relative;z-index:1}
+.results-stats{display:flex;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
+.res-stat{flex:1;padding:16px;text-align:center;border-right:1px solid #f0f0f0}
+.res-stat:last-child{border-right:none}
+.res-stat-num{font-family:'DM Serif Display',serif;font-size:26px;color:#16161e}
+.res-stat-lbl{font-size:11px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.results-tabs{display:flex;padding:14px 20px 0;gap:8px;border-bottom:1px solid #f0f0f0}
+.tab-btn{
+  padding:8px 16px;border-radius:20px;border:none;font-size:13px;font-weight:700;
+  background:#f0f0f0;color:#888;transition:all .15s;
+}
+.tab-btn.active{background:#16161e;color:#fff}
+.review-list{padding:16px 22px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:9px}
+.review-item{padding:12px 14px;border-radius:12px;animation:fadeUp .2s ease both}
+.review-item.correct{background:#f0fdf4;border:1px solid #bbf7d0}
+.review-item.wrong{background:#fff5f5;border:1px solid #fecaca}
+.review-item-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.review-q{font-weight:600;font-size:13px;flex:1;line-height:1.45;color:#16161e}
+.review-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.review-correct-pill{
+  margin-top:6px;font-size:12px;color:#166534;
+  background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-block;
+}
+.review-wrong-pill{
+  margin-top:4px;font-size:12px;color:#991b1b;
+  background:#fee2e2;border-radius:6px;padding:4px 9px;display:inline-block;
+}
+.review-artwork-link{
+  margin-top:5px;font-size:11px;display:inline-flex;align-items:center;gap:4px;
+  color:#2563eb;text-decoration:none;font-weight:600;
+}
+.review-artwork-link:hover{text-decoration:underline}
+.results-footer{
+  display:flex;gap:10px;padding:16px 22px 20px;
+  background:#f8f9fa;border-top:1px solid #ebebeb;flex-shrink:0;
+}
+.results-footer button{
+  flex:1;padding:12px;border-radius:12px;border:none;
+  font-weight:700;font-size:14px;cursor:pointer;transition:opacity .15s;
+}
+.results-footer button:hover{opacity:.88}
+
+/* ── ARTIST BIO MODAL ── */
+#bio-modal{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(10,10,20,.7);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:20px;
+}
+#bio-modal.open{display:flex}
+.bio-card{
+  background:#fff;border-radius:20px;width:100%;max-width:560px;
+  max-height:85vh;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,.4);animation:fadeUp .2s ease;
+  color:#16161e;
+}
+.bio-header{padding:24px 24px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.bio-name{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.1}
+.bio-dates{font-size:13px;color:#888;margin-top:3px}
+.bio-close{
+  background:none;border:none;font-size:22px;color:#aaa;
+  line-height:1;padding:0;flex-shrink:0;margin-top:-2px;
+}
+.bio-close:hover{color:#333;transform:none!important}
+.bio-genre-pill{
+  display:inline-block;border-radius:20px;padding:3px 12px;font-size:11px;
+  font-weight:700;margin:10px 24px 0;
+}
+.bio-body{padding:16px 24px 24px;overflow-y:auto;flex:1}
+.bio-section{margin-bottom:16px}
+.bio-section h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#aaa;margin-bottom:6px}
+.bio-section p{font-size:13px;color:#444;line-height:1.65}
+.bio-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.bio-link{
+  display:inline-flex;align-items:center;gap:5px;padding:7px 14px;
+  border-radius:10px;background:#f0f0f0;color:#333;font-size:12px;font-weight:600;
+  text-decoration:none;transition:background .15s;
+}
+.bio-link:hover{background:#e0e0e0}
+
+/* ── PROGRESS SCREEN ── */
+.progress-card{
+  background:#fff;border-radius:22px;width:100%;max-width:700px;
+  box-shadow:0 24px 80px rgba(0,0,0,.35);overflow:hidden;
+  padding:26px 24px 0;max-height:92vh;display:flex;flex-direction:column;color:#16161e;
+}
+.stat-row-prog{display:flex;gap:10px;margin:14px 0 18px}
+.stat-box{
+  flex:1;border-radius:14px;padding:16px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px}
+.stat-lbl{font-size:11px;font-weight:600;opacity:.8;text-transform:uppercase;letter-spacing:.3px}
+.genre-prog-list{overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px;padding-bottom:4px}
+.genre-prog-item{padding:14px 16px;background:#f8f9fa;border-radius:12px;border:1px solid #ebebeb}
+.genre-prog-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.genre-prog-count{margin-left:auto;font-size:12px;color:#aaa;font-weight:600}
+.quiz-dots-row{display:flex;gap:6px}
+.quiz-dot{
+  flex:1;height:34px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:11px;font-weight:700;border:none;
+  font-family:inherit;transition:transform .15s;
+}
+.quiz-dot.done{cursor:pointer}
+.quiz-dot.done:hover{transform:translateY(-2px)}
+.quiz-dot.undone{background:#ebebeb;color:#bbb;cursor:default}
+.reset-btn-prog{
+  margin:16px 0 22px;padding:12px;background:#ef4444;color:#fff;border:none;
+  border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;width:100%;
+  font-family:inherit;transition:opacity .15s;
+}
+.reset-btn-prog:hover{opacity:.88}
+
+@media(max-width:600px){
+  .hero h1{font-size:38px}
+  .genre-grid{padding:12px 14px 40px;gap:10px}
+  .genre-tile{padding:16px 14px 14px}
+  .card-pad,.quiz-card .quiz-topbar{padding-left:16px;padding-right:16px}
+  .question-text{padding:18px 16px 12px}
+  .options-grid{padding:0 16px}
+  .artwork-hint{margin:0 16px 10px}
+}
+</style>
+</head>
+<body>
+
+<div id="site-header">
+  <div class="logo">🎨 <em>ART</em>STUDY</div>
+  <div class="hdr-right">
+    <button class="hdr-btn" onclick="navigate('progress')">📊 Progress</button>
+    <button class="hdr-btn" onclick="navigate('home')">🏠 Home</button>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<!-- Artist Bio Modal -->
+<div id="bio-modal" onclick="closeBioModal(event)">
+  <div class="bio-card" id="bio-card-inner">
+    <div class="bio-header">
+      <div>
+        <div class="bio-name" id="bio-name"></div>
+        <div class="bio-dates" id="bio-dates"></div>
+      </div>
+      <button class="bio-close" onclick="closeBioModalDirect()">✕</button>
+    </div>
+    <div class="bio-genre-pill" id="bio-pill"></div>
+    <div class="bio-body">
+      <div class="bio-section">
+        <h4>Biography</h4>
+        <p id="bio-text"></p>
+      </div>
+      <div class="bio-section">
+        <h4>Significance</h4>
+        <p id="bio-sig"></p>
+      </div>
+      <div class="bio-section">
+        <h4>Key Works</h4>
+        <p id="bio-works"></p>
+      </div>
+      <div class="bio-links" id="bio-links"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// ARTIST DATA — bios, dates, Wikipedia links
+// ══════════════════════════════════════════════════════════════
+const ARTISTS = {
+  "Claude Monet":{dates:"1840–1926",bio:"Born in Paris and raised in Normandy, Monet became the most celebrated figure of Impressionism. He devoted much of his later life to painting the water garden he designed at Giverny, producing the iconic Water Lilies series. His revolutionary approach to capturing fleeting light effects transformed Western art.",significance:"Monet's series paintings—depicting the same subject under changing light—pioneered the study of perception over form, laying groundwork for abstract art and color field painting.",works:"Impression, Sunrise (1872); Water Lilies (1896–1926); Haystacks series (1890–91); Rouen Cathedral series (1892–94)",wiki:"https://en.wikipedia.org/wiki/Claude_Monet",met:"https://www.metmuseum.org/art/collection/search#!?q=Claude%20Monet"},
+  "Pierre-Auguste Renoir":{dates:"1841–1919",bio:"Born in Limoges, Renoir trained as a porcelain painter before entering the École des Beaux-Arts. He became known for warm, sensuous depictions of leisure, female beauty, and joyful social scenes. Late-stage rheumatoid arthritis forced him to have brushes strapped to his hands, yet he continued painting.",significance:"Renoir brought warmth and intimacy to Impressionism, influencing Henri Matisse and generations of figurative painters. His dappled light effects and rosy palette remain instantly recognizable.",works:"Dance at Le Moulin de la Galette (1876); Luncheon of the Boating Party (1880–81); The Swing (1876); The Large Bathers (1884–87)",wiki:"https://en.wikipedia.org/wiki/Pierre-Auguste_Renoir",met:"https://www.metmuseum.org/art/collection/search#!?q=Renoir"},
+  "Edgar Degas":{dates:"1834–1917",bio:"A Parisian of partly Italian descent, Degas studied classical masters in Italy before developing his signature modern subjects: ballet dancers, racehorses, and café scenes. He worked extensively in pastel in later life and was also a pioneering sculptor. His use of unusual angles was influenced by photography and Japanese prints.",significance:"Degas's candid, off-center compositions fundamentally changed portraiture and figure painting, directly influencing cinema's visual language and 20th-century photography.",works:"The Star (L'Étoile) (c.1878); L'Absinthe (1875–76); The Bellelli Family (1858–67); Little Dancer Aged Fourteen (sculpture, 1881)",wiki:"https://en.wikipedia.org/wiki/Edgar_Degas",met:"https://www.metmuseum.org/art/collection/search#!?q=Edgar%20Degas"},
+  "Camille Pissarro":{dates:"1830–1903",bio:"Born in St. Thomas (then Danish West Indies), Pissarro became the oldest of the Impressionists and the only one to exhibit in all eight group shows. A committed anarchist, he mentored Paul Cézanne, Paul Gauguin, and Georges Seurat. His late career focused on series of Parisian boulevards painted from hotel windows.",significance:"Called the 'father of Impressionism' by Cézanne and Gauguin, Pissarro's patient mentorship and stylistic evolution bridged Impressionism and Neo-Impressionism.",works:"Boulevard Montmartre series (1897); The Boulevard Montmartre at Night (1897); The Hermitage at Pontoise (1867); Apple Picking (1886)",wiki:"https://en.wikipedia.org/wiki/Camille_Pissarro",met:"https://www.metmuseum.org/art/collection/search#!?q=Camille+Pissarro"},
+  "Berthe Morisot":{dates:"1841–1895",bio:"A pivotal figure in Impressionism, Morisot was trained by Corot and became Édouard Manet's sister-in-law. She was the first woman to join the core Impressionist group and exhibited in seven of eight shows. Her brushwork was praised by critics as the most 'impressionist' of all the group members.",significance:"Morisot shattered barriers for women in fine art, and her intimate domestic and outdoor scenes of women's lives offer an irreplaceable perspective. Her reputation has grown dramatically since feminist art history revalued her work.",works:"The Cradle (1872); Summer's Day (1879); The Wet Nurse (1879); Woman at Her Toilette (1875–80)",wiki:"https://en.wikipedia.org/wiki/Berthe_Morisot",met:"https://www.metmuseum.org/art/collection/search#!?q=Berthe+Morisot"},
+  "Pablo Picasso":{dates:"1881–1973",bio:"Born in Málaga, Spain, Picasso moved to Paris in 1904 and transformed art repeatedly over seven decades. His Blue Period and Rose Period preceded his revolutionary co-invention of Cubism with Braque around 1907–08. He later embraced Surrealism and created over 20,000 works across painting, sculpture, ceramics, and printmaking.",significance:"Arguably the most influential artist of the 20th century, Picasso demolished single-point perspective, invented collage as a fine-art medium, and produced Guernica—one of history's most powerful political paintings.",works:"Les Demoiselles d'Avignon (1907); Guernica (1937); Girl Before a Mirror (1932); Three Musicians (1921); Ma Jolie (1911–12)",wiki:"https://en.wikipedia.org/wiki/Pablo_Picasso",met:"https://www.metmuseum.org/art/collection/search#!?q=Pablo+Picasso"},
+  "Georges Braque":{dates:"1882–1963",bio:"A Norman painter who started as a Fauvist, Braque forged Cubism alongside Picasso between 1908 and 1914. He invented papier collé (pasted paper), taking collage into fine art. After being seriously wounded in WWI, his style evolved toward more decorative, lyrical work, culminating in his celebrated Studio and Bird series.",significance:"Braque's Analytical Cubist works are among the most intellectually rigorous paintings ever made. He was the first living artist to have work exhibited in the Louvre.",works:"Houses at l'Estaque (1908); Violin and Candlestick (1910); Still Life with Tenora (1913); Studio series (1949–56)",wiki:"https://en.wikipedia.org/wiki/Georges_Braque",met:"https://www.metmuseum.org/art/collection/search#!?q=Georges+Braque"},
+  "Juan Gris":{dates:"1887–1927",bio:"Born José Victoriano González-Pérez in Madrid, Gris moved to Paris in 1906 and became Picasso's neighbor at the Bateau-Lavoir. He developed a more systematic, grid-based form of Synthetic Cubism—working from abstraction back toward the recognizable subject, the reverse of Picasso and Braque. Supported by dealer Kahnweiler, he died young at 40.",significance:"Gris brought rigour and architectural clarity to Cubism. His approach of building form from abstract structure rather than fragmenting observed reality opened new possibilities.",works:"Portrait of Pablo Picasso (1912); Still Life with Checked Tablecloth (1915); The Sunblind (1914); Homage to Pablo Picasso (1912)",wiki:"https://en.wikipedia.org/wiki/Juan_Gris",met:"https://www.metmuseum.org/art/collection/search#!?q=Juan+Gris"},
+  "Fernand Léger":{dates:"1881–1955",bio:"A Norman painter and World War I veteran, Léger developed a signature 'tubular' Cubism inspired by the machinery and camaraderie of the trenches. His work celebrated modern industry, workers, and popular culture. He taught at the New Bauhaus in Chicago and created vast murals and mosaics for public buildings.",significance:"Léger bridged Cubism and political art, influencing graphic design, film animation, and public muralism. His optimistic, bold imagery of modern workers remains deeply influential.",works:"Contrast of Forms (1913); The City (1919); Three Women (Le Grand Déjeuner) (1921); The Builders (1950)",wiki:"https://en.wikipedia.org/wiki/Fernand_L%C3%A9ger",met:"https://www.metmuseum.org/art/collection/search#!?q=Fernand+Leger"},
+  "Robert Delaunay":{dates:"1885–1941",bio:"A Parisian painter, Delaunay developed 'Orphism' (or Simultanism), a color-focused offshoot of Cubism that placed pure chromatic contrast at the center. His wife Sonia was equally important—together they created a total aesthetic environment of painting, textiles, fashion, and book covers. He was championed by poet Apollinaire.",significance:"Delaunay's luminous disc and window paintings anticipated Op Art and Color Field painting by decades, and his influence on Bauhaus color theory was profound.",works:"Simultaneous Windows (1912); Homage to Blériot (1914); Eiffel Tower series (1909–12); The Cardiff Team (1912–13)",wiki:"https://en.wikipedia.org/wiki/Robert_Delaunay",met:"https://www.metmuseum.org/art/collection/search#!?q=Robert+Delaunay"},
+  "Salvador Dalí":{dates:"1904–1989",bio:"Born in Figueres, Catalonia, Dalí joined the Surrealist movement in Paris in 1929 and became its most flamboyant ambassador. Expelled by Breton in 1934, he continued independently, mastering hyper-realistic technique to render impossible dream imagery. He also worked in film, fashion, jewelry, and theatre.",significance:"Dalí's 'paranoiac-critical method'—using self-induced hallucinations to generate imagery—produced some of the 20th century's most iconic paintings and expanded ideas about the role of the unconscious in art.",works:"The Persistence of Memory (1931); The Elephants (1948); Swans Reflecting Elephants (1937); The Sacrament of the Last Supper (1955)",wiki:"https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD",met:"https://www.metmuseum.org/art/collection/search#!?q=Salvador+Dali"},
+  "René Magritte":{dates:"1898–1967",bio:"A Belgian painter who worked quietly in Brussels for most of his career, Magritte developed a deeply philosophical Surrealism based on the paradox between images and words, and between the familiar and the impossible. His bowler-hatted figures and visual riddles made him one of the most reproduced artists in history.",significance:"Magritte's questioning of perception and representation directly influenced Conceptual art, advertising, graphic design, and postmodern philosophy. 'The Treachery of Images' (Ceci n'est pas une pipe) remains a cornerstone of visual theory.",works:"The Treachery of Images (1929); The Son of Man (1964); The Empire of Light series (1953–54); Personal Values (1952)",wiki:"https://en.wikipedia.org/wiki/Ren%C3%A9_Magritte",met:"https://www.metmuseum.org/art/collection/search#!?q=Rene+Magritte"},
+  "Frida Kahlo":{dates:"1907–1954",bio:"A Mexican painter who survived a devastating bus accident at 18, Kahlo transformed her physical and emotional pain into vivid, autobiographical self-portraits incorporating Mexican folk art, pre-Columbian imagery, and Surrealist symbolism. Married twice to muralist Diego Rivera, she defied categorization throughout her short life.",significance:"Kahlo's work, largely overlooked in her lifetime, was reappraised after her death as a landmark of feminist art, Indigenous identity, and personal narrative. She is now one of the most recognized artists in the world.",works:"The Two Fridas (1939); Self-Portrait with Thorn Necklace and Hummingbird (1940); My Birth (1932); The Broken Column (1944)",wiki:"https://en.wikipedia.org/wiki/Frida_Kahlo",met:"https://www.metmuseum.org/art/collection/search#!?q=Frida+Kahlo"},
+  "Max Ernst":{dates:"1891–1976",bio:"A German-born artist, Ernst was central to both Dada and Surrealism. He invented the techniques of frottage (rubbing textures) and grattage (scraping paint) to generate unconscious imagery, as well as collage novels using 19th-century engravings. He fled Nazi Germany, was interned in France, and eventually emigrated to the USA.",significance:"Ernst's technical inventions gave Surrealism many of its most distinctive visual strategies. His collage novels influenced graphic novels and visual storytelling, and his frottage techniques anticipate action painting.",works:"The Elephant Celebes (1921); Europe After the Rain II (1940–42); Forest and Dove (1927); The Robing of the Bride (1940)",wiki:"https://en.wikipedia.org/wiki/Max_Ernst",met:"https://www.metmuseum.org/art/collection/search#!?q=Max+Ernst"},
+  "Joan Miró":{dates:"1893–1983",bio:"A Catalan painter, sculptor, and ceramicist, Miró developed a playful, biomorphic vocabulary of signs, stars, moons, and abstract figures rooted in Catalan folk art and his subconscious. Associated with Surrealism but always independent, he also created vast tapestries, murals, and public sculptures.",significance:"Miró's colorful, childlike imagery influenced Abstract Expressionism (especially Arshile Gorky and Robert Motherwell), graphic design, and public art worldwide. His Fundació in Barcelona holds the world's largest collection of his work.",works:"The Farm (1921–22); Harlequin's Carnival (1924–25); The Hunter (Catalan Landscape) (1923–24); Constellation series (1940–41)",wiki:"https://en.wikipedia.org/wiki/Joan_Mir%C3%B3",met:"https://www.metmuseum.org/art/collection/search#!?q=Joan+Miro"},
+  "Jackson Pollock":{dates:"1912–1956",bio:"Born in Wyoming, Pollock became the defining figure of Abstract Expressionism with his 'drip painting' technique—laying canvas on the floor and pouring, dripping, and flinging paint to create all-over compositions. He worked with Jungian analysis and was influenced by Navajo sand painting. He died in a car crash at 44.",significance:"Pollock's radical break from the brush liberated painting from representation entirely and shifted the global art world's center from Paris to New York. His influence on subsequent abstract painting is immeasurable.",works:"No. 5, 1948; Lavender Mist (Number 1, 1950); Autumn Rhythm (Number 30, 1950); Blue Poles (1952)",wiki:"https://en.wikipedia.org/wiki/Jackson_Pollock",met:"https://www.metmuseum.org/art/collection/search#!?q=Jackson+Pollock"},
+  "Mark Rothko":{dates:"1903–1970",bio:"Born in Latvia, Rothko emigrated to the USA as a child. After early Surrealist-influenced work, he developed his signature 'multiform' style: large canvases with soft-edged rectangles of luminous, floating color intended to induce powerful emotional states. He rejected the label 'Abstract Expressionist' and saw his work as deeply spiritual.",significance:"Rothko's Color Field paintings transformed how viewers experience abstract art—as emotional and even religious events rather than formal exercises. The Rothko Chapel in Houston remains a living monument to his vision.",works:"No. 61 (Rust and Blue) (1953); Orange and Yellow (1956); Seagram Murals (1958–59); Black on Maroon (1958)",wiki:"https://en.wikipedia.org/wiki/Mark_Rothko",met:"https://www.metmuseum.org/art/collection/search#!?q=Mark+Rothko"},
+  "Willem de Kooning":{dates:"1904–1997",bio:"A Dutch-American painter, de Kooning moved to New York in 1926 and became central to Abstract Expressionism. His Woman series (1950–53) combined furious gestural brushwork with figurative imagery, outraging critics who expected pure abstraction. His late career saw a turn toward lyrical, fluid abstraction influenced by his landscape in East Hampton.",significance:"De Kooning's synthesis of figuration and abstraction, and his refusal to separate the two, kept figural painting vital during the Abstract Expressionist era and influenced Neo-Expressionism decades later.",works:"Woman I (1950–52); Excavation (1950); Interchange (1955); Pink Angels (1945)",wiki:"https://en.wikipedia.org/wiki/Willem_de_Kooning",met:"https://www.metmuseum.org/art/collection/search#!?q=Willem+de+Kooning"},
+  "Lee Krasner":{dates:"1908–1984",bio:"A New Yorker of Ukrainian-Jewish heritage, Krasner trained under Hans Hofmann and was a pioneering Abstract Expressionist in her own right—though her career was long overshadowed by her marriage to Jackson Pollock. After Pollock's death in 1956, she produced some of her most powerful work, including the monumental Earth Green series.",significance:"Krasner's recovery and rehabilitation of Pollock's estate helped canonize Abstract Expressionism. Her own work is now recognized as among the most formally rigorous of the movement.",works:"Milkweed (1955); The Seasons (1957); Gaea (1966); Palingenesis (1971)",wiki:"https://en.wikipedia.org/wiki/Lee_Krasner",met:"https://www.metmuseum.org/art/collection/search#!?q=Lee+Krasner"},
+  "Franz Kline":{dates:"1910–1962",bio:"A Pennsylvania-born painter, Kline developed his signature style of large-scale black-and-white gestural strokes in the late 1940s, after projecting a brush drawing onto a wall and being struck by its monumental power. His bold, architectural canvases made him one of the most distinctive voices in Abstract Expressionism.",significance:"Kline's black-and-white paintings influenced the development of Minimalism and were widely admired in Japan, where they resonated with the tradition of calligraphic brushwork.",works:"Chief (1950); Mahoning (1956); Siegfried (1958); Nijinsky (1950)",wiki:"https://en.wikipedia.org/wiki/Franz_Kline",met:"https://www.metmuseum.org/art/collection/search#!?q=Franz+Kline"},
+  "Caravaggio":{dates:"1571–1610",bio:"Born Michelangelo Merisi da Caravaggio in Milan, he transformed European painting with his radical chiaroscuro (tenebrism)—placing figures in near-total darkness illuminated by a single dramatic light source. His tumultuous life included murder, exile, and patronage by powerful cardinals. He died at 38, probably of lead poisoning.",significance:"Caravaggio's influence on Baroque painting across Europe was enormous. Velázquez, Rembrandt, Rubens, and Artemisia Gentileschi all learned from his innovations. He essentially invented the visual language of cinema lighting.",works:"The Calling of Saint Matthew (1599–1600); Judith Beheading Holofernes (1598–99); The Supper at Emmaus (1601); Narcissus (c.1597–99)",wiki:"https://en.wikipedia.org/wiki/Caravaggio",met:"https://www.metmuseum.org/art/collection/search#!?q=Caravaggio"},
+  "Rembrandt van Rijn":{dates:"1606–1669",bio:"The greatest Dutch Golden Age painter, Rembrandt was born in Leiden and made Amsterdam his base. His mastery of light, shadow, and psychological depth produced some of history's most moving portraits, self-portraits, and biblical scenes. His financial ruin later in life did not diminish his output or ambition.",significance:"Rembrandt's 100+ self-portraits constitute the most sustained autobiographical project in art history. His handling of paint—combining glazes and thick impasto—was unmatched and influenced nearly every subsequent figurative painter.",works:"The Night Watch (1642); Self-Portrait with Two Circles (c.1665–69); The Anatomy Lesson of Dr. Nicolaes Tulp (1632); The Return of the Prodigal Son (c.1661–69)",wiki:"https://en.wikipedia.org/wiki/Rembrandt",met:"https://www.metmuseum.org/art/collection/search#!?q=Rembrandt"},
+  "Peter Paul Rubens":{dates:"1577–1640",bio:"Born in Germany to Flemish parents, Rubens became the supreme Baroque painter of the Spanish Netherlands. He ran a vast workshop in Antwerp, producing altarpieces, mythologies, portraits, and diplomatic gifts for the courts of Europe. He was also a skilled diplomat and linguist.",significance:"Rubens's dynamic compositions, sensuous handling of flesh, and sheer productive energy shaped Baroque painting across Europe. His influence on Watteau, Delacroix, and Renoir's treatment of the nude is direct and profound.",works:"The Descent from the Cross (1612–14); The Rape of the Daughters of Leucippus (c.1617); Samson and Delilah (1609–10); The Garden of Love (c.1630–32)",wiki:"https://en.wikipedia.org/wiki/Peter_Paul_Rubens",met:"https://www.metmuseum.org/art/collection/search#!?q=Peter+Paul+Rubens"},
+  "Johannes Vermeer":{dates:"1632–1675",bio:"A Dutch Golden Age painter from Delft, Vermeer produced only around 34–36 known paintings, working slowly on intimate domestic interiors suffused with cool northern light. He is believed to have used a camera obscura as a compositional tool. He died in debt, and his wife had to declare bankruptcy.",significance:"Rediscovered in the 19th century, Vermeer is now recognized as one of the supreme masters of light in painting. His influence on photography and cinema is immense; filmmakers regularly cite him as a primary visual reference.",works:"Girl with a Pearl Earring (c.1665); The Milkmaid (c.1657–58); Woman Reading a Letter (c.1663); The Art of Painting (c.1666–68)",wiki:"https://en.wikipedia.org/wiki/Johannes_Vermeer",met:"https://www.metmuseum.org/art/collection/search#!?q=Vermeer"},
+  "Artemisia Gentileschi":{dates:"1593–1656",bio:"A Roman painter and one of the first women to achieve recognition in the male-dominated art world of her time, Gentileschi trained under her father Orazio and developed a powerful Caravaggesque style. After surviving assault by her tutor Agostino Tassi, she channeled her experiences into bold, dramatic depictions of heroic women.",significance:"Gentileschi's work was largely forgotten for centuries and has been dramatically reappraised in the last 50 years as a feminist art history perspective has brought her forceful, psychologically intense paintings into focus.",works:"Judith Slaying Holofernes (c.1614–20); Self-Portrait as the Allegory of Painting (c.1638–39); Susanna and the Elders (1610); Esther Before Ahasuerus (c.1628–35)",wiki:"https://en.wikipedia.org/wiki/Artemisia_Gentileschi",met:"https://www.metmuseum.org/art/collection/search#!?q=Artemisia+Gentileschi"},
+  "Andy Warhol":{dates:"1928–1987",bio:"Born Andrew Warhola in Pittsburgh, Warhol became the foremost figure of Pop Art. A successful commercial illustrator in New York before turning to fine art, he elevated consumer goods, celebrities, and mass-media imagery into iconic paintings, prints, and films. His Silver Factory studio was a hub of the 1960s counterculture.",significance:"Warhol collapsed the distinction between high art and popular culture, between commercial and fine art, and between the artist and their brand. His influence on contemporary art, celebrity culture, and branding is all-pervading.",works:"Campbell's Soup Cans (1962); Marilyn Diptych (1962); Shot Sage Blue Marilyn (1964); Mao (1972); Brillo Boxes (1964)",wiki:"https://en.wikipedia.org/wiki/Andy_Warhol",met:"https://www.metmuseum.org/art/collection/search#!?q=Andy+Warhol"},
+  "Roy Lichtenstein":{dates:"1923–1997",bio:"A New York painter, Lichtenstein appropriated the visual language of comic books and commercial printing—Ben-Day dots, bold outlines, primary colors—and applied them to monumental canvases. Later he deconstructed art history itself, creating Cubist, Expressionist, and Monet-style works in his own Pop idiom.",significance:"Lichtenstein's questioning of originality, taste, and the boundaries of high versus low culture was as philosophically acute as it was visually striking. His technique influenced graphic design, street art, and advertising globally.",works:"Whaam! (1963); Drowning Girl (1963); Look Mickey (1961); Brushstroke series (1965–66); Rouen Cathedral series (1969)",wiki:"https://en.wikipedia.org/wiki/Roy_Lichtenstein",met:"https://www.metmuseum.org/art/collection/search#!?q=Roy+Lichtenstein"},
+  "Jasper Johns":{dates:"1930–",bio:"A South Carolina-born painter, Johns burst onto the New York scene in 1958 with his paintings of flags, targets, and numbers—familiar symbols rendered in encaustic wax with painstaking, painterly surfaces. His work challenged Abstract Expressionism's emotional rhetoric with cool, philosophical ambiguity and paved the way for Minimalism and Conceptual Art.",significance:"Johns's use of found imagery and focus on the act of looking rather than feeling directly influenced Minimalism, Conceptual Art, and Neo-Expressionism. His Flag sold for $110 million in 2010.",works:"Flag (1954–55); Target with Four Faces (1955); Three Flags (1958); Map (1961); False Start (1959)",wiki:"https://en.wikipedia.org/wiki/Jasper_Johns",met:"https://www.metmuseum.org/art/collection/search#!?q=Jasper+Johns"},
+  "Robert Rauschenberg":{dates:"1925–2008",bio:"A Texas-born artist, Rauschenberg studied under Josef Albers and John Cage at Black Mountain College, then created his revolutionary 'Combines'—collaged assemblages that incorporated newspapers, fabric, found objects, and paint. He won the Grand Prix at the 1964 Venice Biennale, marking Pop Art's international triumph.",significance:"Rauschenberg's merging of painting, sculpture, and found material anticipated installation art and Neo-Dada, and his rejection of the boundary between art and life was immensely liberating for subsequent generations.",works:"Bed (1955); Monogram (1955–59); Erased de Kooning Drawing (1953); Retroactive I (1963)",wiki:"https://en.wikipedia.org/wiki/Robert_Rauschenberg",met:"https://www.metmuseum.org/art/collection/search#!?q=Robert+Rauschenberg"},
+  "Claes Oldenburg":{dates:"1929–2022",bio:"A Swedish-born American sculptor, Oldenburg created soft sculptures of hard objects (typewriters, toilets, fans) made from vinyl and kapok, and later monumental public sculptures of everyday items—clothespins, spoons, shuttlecocks—installed in city squares worldwide. He was central to the early 1960s Happenings and performance art scene.",significance:"Oldenburg's irreverent transformation of consumer objects into monumental sculpture democratized public art and challenged the reverence accorded to traditional monuments. His colossal works appear in cities across the world.",works:"Clothespin (1976, Philadelphia); Spoonbridge and Cherry (1988, Minneapolis); The Store (1961); Soft Typewriter (1963)",wiki:"https://en.wikipedia.org/wiki/Claes_Oldenburg",met:"https://www.metmuseum.org/art/collection/search#!?q=Claes+Oldenburg"},
+  "Leonardo da Vinci":{dates:"1452–1519",bio:"The archetypal Renaissance man, Leonardo was born in Vinci, Tuscany, and apprenticed under Verrocchio in Florence. A painter, sculptor, architect, musician, mathematician, engineer, and scientist, he filled notebooks with studies of human anatomy, flight, hydraulics, and optics. He spent his final years at the French court of François I.",significance:"Leonardo's two surviving paintings that are securely attributed—the Mona Lisa and The Last Supper—are the most famous artworks ever made. His scientific investigations prefigured modern anatomy, aeronautics, and optics by centuries.",works:"Mona Lisa (c.1503–19); The Last Supper (1495–98); The Virgin of the Rocks (1483–86); Vitruvian Man (c.1490, drawing)",wiki:"https://en.wikipedia.org/wiki/Leonardo_da_Vinci",met:"https://www.metmuseum.org/art/collection/search#!?q=Leonardo+da+Vinci"},
+  "Michelangelo":{dates:"1475–1564",bio:"Born in Caprese, Tuscany, Michelangelo showed extraordinary talent early, training in Florence under Ghirlandaio and in the Medici circle. His sculpture, painting, architecture, and poetry established him as the greatest artist of the Renaissance—indeed of all time, in the view of many contemporaries and successors.",significance:"Michelangelo's Sistine Chapel ceiling and The Creation of Adam are the most reproduced images in art history after the Mona Lisa. His treatment of the human body as the supreme vehicle of spiritual expression defined Western figurative art for centuries.",works:"David (sculpture, 1501–04); Sistine Chapel ceiling (1508–12); Pietà (sculpture, 1498–99); Moses (sculpture, c.1513–15)",wiki:"https://en.wikipedia.org/wiki/Michelangelo",met:"https://www.metmuseum.org/art/collection/search#!?q=Michelangelo"},
+  "Raphael":{dates:"1483–1520",bio:"Born in Urbino, Raphael trained under Perugino before moving to Florence, where he absorbed the innovations of Leonardo and Michelangelo. He became the supreme court painter in Rome under Pope Julius II and Leo X, decorating the Vatican's Stanze with his School of Athens. He died at just 37, universally mourned.",significance:"Raphael's harmonious, idealized compositions became the gold standard for academic painting until the 19th century. His depictions of the Madonna were endlessly copied and reproduced, shaping visual Catholicism worldwide.",works:"The School of Athens (1509–11); Sistine Madonna (1512); Portrait of Pope Julius II (1511–12); The Transfiguration (1516–20)",wiki:"https://en.wikipedia.org/wiki/Raphael",met:"https://www.metmuseum.org/art/collection/search#!?q=Raphael"},
+  "Sandro Botticelli":{dates:"1445–1510",bio:"A Florentine painter who worked in the circle of Lorenzo de' Medici, Botticelli produced the most celebrated mythological paintings of the Renaissance. After Savonarola's 'bonfire of the vanities,' he returned to religious subjects and largely abandoned painting. He died forgotten, and his reputation was only fully revived by Ruskin and the Pre-Raphaelites in the 19th century.",significance:"Botticelli's Birth of Venus and Primavera are among the most reproduced images of the Renaissance and have been endlessly referenced in art, advertising, and popular culture.",works:"The Birth of Venus (c.1484–86); Primavera (c.1477–82); Adoration of the Magi (1475–76); La bella Simonetta (c.1476)",wiki:"https://en.wikipedia.org/wiki/Sandro_Botticelli",met:"https://www.metmuseum.org/art/collection/search#!?q=Sandro+Botticelli"},
+  "Titian":{dates:"c.1488/90–1576",bio:"The dominant painter of the Venetian High Renaissance, Titian worked for over six decades, serving emperors and popes. He transformed the use of oil paint—building up surfaces with complex layers of glazes and impasto—and pioneered the depiction of landscape, portraiture, and mythological subjects with unprecedented psychological depth.",significance:"Titian's long career and influence span the entire Renaissance and into the Baroque. Rubens, Velázquez, Rembrandt, and later Manet all studied and copied his work. He essentially invented the way oil paint is used expressively.",works:"Assumption of the Virgin (1516–18); Venus of Urbino (1538); Sacred and Profane Love (c.1514); Emperor Charles V on Horseback (1548)",wiki:"https://en.wikipedia.org/wiki/Titian",met:"https://www.metmuseum.org/art/collection/search#!?q=Titian"},
+  "Donald Judd":{dates:"1928–1994",bio:"A Missouri-born artist and theorist, Judd was the leading figure of Minimalism. He abandoned painting in the early 1960s for three-dimensional 'specific objects'—industrially fabricated boxes, progressions, and stacks in anodized aluminum, plexiglass, and galvanized iron. He established a permanent installation of his work in Marfa, Texas.",significance:"Judd's insistence on precision, materiality, and the rejection of metaphor or expression made Minimalism the dominant art movement of the 1960s–70s and influenced design, architecture, and typography profoundly.",works:"Untitled (Stack) series (1965–); 100 untitled works in mill aluminum, Marfa (1982–86); Untitled (Judd 1) (1963)",wiki:"https://en.wikipedia.org/wiki/Donald_Judd",met:"https://www.metmuseum.org/art/collection/search#!?q=Donald+Judd"},
+  "Agnes Martin":{dates:"1912–2004",bio:"A Canadian-American painter, Martin developed an extreme form of meditative abstraction based on subtle grids and pale washes of color on large, square canvases. She lived in deliberate isolation in New Mexico and described her work as an expression of 'happiness, innocence, and beauty.' She rejected the Minimalist label, preferring Abstract Expressionism.",significance:"Martin's contemplative, almost invisible grids have been enormously influential on contemporary artists seeking spiritual depth and restraint. Her work is central to discussions of silence, presence, and the experience of looking.",works:"The Tree (1964); Friendship (1963); Night Sea (1963); Untitled #10 (1990)",wiki:"https://en.wikipedia.org/wiki/Agnes_Martin",met:"https://www.metmuseum.org/art/collection/search#!?q=Agnes+Martin"},
+  "Frank Stella":{dates:"1936–2024",bio:"A Massachusetts-born painter, Stella's Black Paintings (1958–60), shown when he was just 23, were immediately canonical: parallel black stripes that refused all illusion or expression. He later moved to shaped canvases, Maximalist painted reliefs, and finally large-scale architectural sculpture, constantly reinventing his practice.",significance:"Stella's dictum 'What you see is what you see' defined Minimalism's philosophical position. His shaped canvases also anticipated the move toward installation art and questioned the fundamental conventions of painting.",works:"The Marriage of Reason and Squalor II (1959); Hyena Stomp (1962); Protractor series (1967–69); Moby-Dick series (1980s–90s)",wiki:"https://en.wikipedia.org/wiki/Frank_Stella",met:"https://www.metmuseum.org/art/collection/search#!?q=Frank+Stella"},
+  "Dan Flavin":{dates:"1933–1996",bio:"A New York-born artist, Flavin transformed fluorescent light tubes into art objects beginning in 1963 with his 'diagonal of personal ecstasy.' He dedicated works to friends, artists, and political figures, and his light installations transformed entire architectural spaces with colored fluorescence.",significance:"Flavin's use of industrial, mass-produced lighting components was central to Minimalism's rejection of the artist's hand. His works also anticipated Light Art and experiential installation.",works:"The Diagonal of May 25, 1963; Untitled (to Barnett Newman) (1971); Monument for V. Tatlin series (1964–82); greens crossing greens (1966)",wiki:"https://en.wikipedia.org/wiki/Dan_Flavin",met:"https://www.metmuseum.org/art/collection/search#!?q=Dan+Flavin"},
+  "Carl Andre":{dates:"1935–",bio:"A Massachusetts-born sculptor and poet, Andre developed a radical approach to sculpture based on flat arrangements of identical industrial units—bricks, metal plates, timber beams—placed directly on the floor. His work radically questioned the pedestal, the gesture, and the idea of sculpture as elevated object.",significance:"Andre's 'cuts in space' shifted sculpture from mass to place, from object to environment, and were controversial (particularly after Equivalent VIII faced public outcry in 1976). His work is foundational to Land Art and Post-Minimalism.",works:"Lever (1966); Equivalent VIII (1966); 144 Magnesium Square (1969); Stone Field Sculpture (1977, Hartford)",wiki:"https://en.wikipedia.org/wiki/Carl_Andre",met:"https://www.metmuseum.org/art/collection/search#!?q=Carl+Andre"},
+  "Edvard Munch":{dates:"1863–1944",bio:"A Norwegian painter scarred by childhood losses—his mother and sister died young, and he suffered nervous breakdowns—Munch developed an intensely psychological art of anxiety, desire, and existential dread. He settled in Oslo and produced an enormous body of paintings, prints, and drawings exploring the same themes obsessively.",significance:"Munch's The Scream is the second most recognized image in Western art after the Mona Lisa. His work was a direct influence on the German Expressionists and on existentialist art and literature throughout the 20th century.",works:"The Scream (1893); Madonna (1894); The Kiss (1897); Anxiety (1894); The Dance of Life (1899–1900)",wiki:"https://en.wikipedia.org/wiki/Edvard_Munch",met:"https://www.metmuseum.org/art/collection/search#!?q=Edvard+Munch"},
+  "Ernst Ludwig Kirchner":{dates:"1880–1938",bio:"A German painter and co-founder of Die Brücke (The Bridge), the first German Expressionist group, in Dresden in 1905. His frenzied, angular depictions of Berlin street life, cabarets, and nudes pushed emotional intensity to the limit. Traumatized by WWI and branded 'degenerate' by the Nazis, he destroyed much of his own work before dying by suicide.",significance:"Kirchner's Berlin street scenes and his angular, clashing color palette defined early German Expressionism and influenced Neo-Expressionism, Punk aesthetics, and graphic art throughout the 20th century.",works:"Street, Berlin (1913); Marcella (1909–10); Potsdamer Platz (1914); Self-Portrait as a Soldier (1915)",wiki:"https://en.wikipedia.org/wiki/Ernst_Ludwig_Kirchner",met:"https://www.metmuseum.org/art/collection/search#!?q=Ernst+Ludwig+Kirchner"},
+  "Egon Schiele":{dates:"1890–1918",bio:"An Austrian protégé of Gustav Klimt, Schiele developed one of the most radically visceral styles in art history—angular, contorted self-portraits and nudes that expressed raw psychological and erotic tension. He was briefly imprisoned for obscenity. He died of the Spanish flu at 28, just as his reputation was being established.",significance:"Despite his short life, Schiele's psychological intensity and physical distortion of the human body deeply influenced Expressionism, Neo-Expressionism (especially Georg Baselitz and Lucian Freud), and contemporary figurative art.",works:"Self-Portrait with Physalis (1912); Reclining Woman with Green Stockings (1917); The Family (1918); Seated Male Nude (Self-Portrait) (1910)",wiki:"https://en.wikipedia.org/wiki/Egon_Schiele",met:"https://www.metmuseum.org/art/collection/search#!?q=Egon+Schiele"},
+  "Emil Nolde":{dates:"1867–1956",bio:"A German-Danish Expressionist, Nolde is known for his intense, spiritually charged depictions of biblical subjects, folk life, and landscapes in blazing, non-naturalistic color. Paradoxically, despite joining the Nazi party, his work was declared 'degenerate art' and he was banned from painting—but secretly produced over 1,300 'Unpainted Pictures' in watercolor.",significance:"Nolde's color intensity and raw handling of paint influenced Fauvism's reception in Germany and anticipate Abstract Expressionism's emotional directness. His complex biography complicates, but does not diminish, his formal achievement.",works:"Dance Around the Golden Calf (1910); The Last Supper (1909); Flower Garden (1908); Masks (1911)",wiki:"https://en.wikipedia.org/wiki/Emil_Nolde",met:"https://www.metmuseum.org/art/collection/search#!?q=Emil+Nolde"},
+  "Wassily Kandinsky":{dates:"1866–1944",bio:"A Russian painter and art theorist, Kandinsky is credited with creating the first purely abstract paintings around 1910–11. He taught at the Bauhaus in Weimar and Dessau, developed a comprehensive theory of color and form in 'Concerning the Spiritual in Art' (1911), and later worked in Paris, where his style became more geometric.",significance:"Kandinsky is the founding father of abstract art. His theoretical writings on color, form, and their relationship to musical and spiritual experience provided a philosophical framework for abstraction that is still taught worldwide.",works:"Composition IV (1911); Composition VIII (1923); Yellow-Red-Blue (1925); Several Circles (1926); Improvisation 31 (Sea Battle) (1913)",wiki:"https://en.wikipedia.org/wiki/Wassily_Kandinsky",met:"https://www.metmuseum.org/art/collection/search#!?q=Wassily+Kandinsky"},
+  "Banksy":{dates:"1974–",bio:"An anonymous British street artist, political activist, and film director whose satirical stencil-based works appear on walls, bridges, and streets worldwide. His identity remains unknown despite widespread speculation. His work combines dark humor with trenchant social criticism of consumerism, war, and hypocrisy.",significance:"Banksy popularized street art as a mainstream fine-art phenomenon and political medium. His auction stunt (self-shredding of Girl with Balloon in 2018) and the Walled Off Hotel in Bethlehem are landmark interventions.",works:"Girl with Balloon (2002); Flower Thrower (2003); Napalm (2004); Slave Labour (2012); Devolved Parliament (2009)",wiki:"https://en.wikipedia.org/wiki/Banksy",met:"https://www.metmuseum.org/art/collection/search#!?q=Banksy"},
+  "Jean-Michel Basquiat":{dates:"1960–1988",bio:"A Brooklyn-born artist of Haitian and Puerto Rican descent, Basquiat began as the graffiti artist SAMO in lower Manhattan before being discovered by gallerist Annina Nosei. His neo-expressionist paintings combined text, symbol, anatomy, and social commentary, with race, wealth, and police brutality as recurring themes. He died of a heroin overdose at 27.",significance:"Basquiat brought African-American and Caribbean perspectives into the mainstream of the New York art world and created some of the most commercially and critically successful paintings of the 1980s. His works now regularly sell for over $100 million.",works:"Untitled (Skull) (1981); Hollywood Africans (1983); Irony of a Negro Policeman (1981); Flexible (1984)",wiki:"https://en.wikipedia.org/wiki/Jean-Michel_Basquiat",met:"https://www.metmuseum.org/art/collection/search#!?q=Basquiat"},
+  "Shepard Fairey":{dates:"1970–",bio:"An American street artist and graphic designer from Charleston, SC, Fairey first gained attention with his 'Andre the Giant Has a Posse' sticker campaign. His studio Obey Giant blends street art with commercial design. He is best known for the Hope poster for Barack Obama's 2008 presidential campaign, which became one of the most iconic political images in American history.",significance:"Fairey's career demonstrates street art's evolution into mainstream political and commercial communication. His work interrogates propaganda aesthetics while simultaneously employing them.",works:"Obey Giant (1989–ongoing); Hope poster (2008); Andre the Giant Has a Posse (1989); Make Art Not War series",wiki:"https://en.wikipedia.org/wiki/Shepard_Fairey",met:""},
+  "Keith Haring":{dates:"1958–1990",bio:"A Pennsylvania-born artist who trained at SVA in New York, Haring began drawing in chalk on unused advertising panels in the NYC subway. His bold, cartoonish figures—glowing babies, barking dogs, dancing people—became one of the most recognizable visual languages of the 1980s. He used his fame to campaign for AIDS awareness; he died of AIDS-related complications at 31.",significance:"Haring democratized art by taking it into public space without permission, and his work's accessibility and optimism made it a global visual lingua franca. His Pop Shop challenged elitism while funding his foundation.",works:"Radiant Baby (1982, subway); Crack is Wack (1986, mural); Once Upon a Time (1989, mural); Silence = Death (1989)",wiki:"https://en.wikipedia.org/wiki/Keith_Haring",met:"https://www.metmuseum.org/art/collection/search#!?q=Keith+Haring"},
+  "Os Gemeos":{dates:"1974–",bio:"Brazilian twin brothers Otávio and Gustavo Pandolfo from São Paulo who began graffiti writing in 1987. Deeply influenced by hip-hop culture and Brazilian folklore, they developed a distinctive style of yellow-skinned dreamlike characters, intricate patterns, and social commentary that has adorned walls, museums, and galleries on six continents.",significance:"Os Gemeos brought Brazilian folk tradition, social critique, and dream imagery into international street art, proving that the genre could operate as both public mural art and gallery installation at the highest level.",works:"Giant (2012, Boston); Silence of the Music (2011); Untitled (2011, Tate Modern); São Paulo murals (ongoing)",wiki:"https://en.wikipedia.org/wiki/Os_Gemeos",met:""}
+};
+
+// ══════════════════════════════════════════════════════════════
+// GENRE PERIOD INFO
+// ══════════════════════════════════════════════════════════════
+const PERIOD_INFO = {
+  impressionism: {period:"c. 1860s–1890s, France",text:"Impressionism emerged in Paris as artists rebelled against the rigid conventions of the Académie des Beaux-Arts. Rejecting the meticulously finished canvases of the official Salon, a group of painters—Monet, Renoir, Degas, Pissarro, and Morisot among them—exhibited independently from 1874, capturing the shifting light and rhythms of modern leisure, landscape, and urban life. The movement's influence was amplified by new industrialization (railways bringing artists to the countryside), Japanese ukiyo-e prints (showing unusual cropping and flat color), and tube oil paints (enabling painting outdoors). It was the first truly modern art movement."},
+  cubism: {period:"c. 1907–1920s, France & Spain",text:"Cubism was jointly developed in Paris by Pablo Picasso (Spain) and Georges Braque (France), building on Paul Cézanne's structural approach to form. It demolished the 600-year-old convention of single-point perspective, showing subjects from multiple viewpoints simultaneously. The movement had two phases: Analytical Cubism (1908–12), using monochromatic fragmented planes, and Synthetic Cubism (from 1912), introducing collage and brighter color. Its influence on art, architecture, typography, film, and literature was revolutionary."},
+  surrealism: {period:"1920s–1950s, primarily France",text:"Surrealism was founded in Paris in 1924 by poet André Breton, who published the first Surrealist Manifesto. Influenced by Freudian psychoanalysis and Dada's anti-rationalism, Surrealists sought to access the unconscious mind through automatic writing, dream imagery, and irrational juxtapositions. The movement had both figurative and abstract wings, attracted artists from across Europe and the Americas, and became the dominant international avant-garde of the 1930s. It was dispersed by WWII but remained hugely influential."},
+  abstract_expressionism: {period:"1940s–1950s, New York, USA",text:"Abstract Expressionism was the first American art movement to achieve international dominance, emerging in New York in the 1940s as European artists fled WWII. Influenced by Surrealism's automatism and Jungian psychology, it had two broad tendencies: gestural painting (Pollock, de Kooning, Kline) and Color Field painting (Rothko, Newman, Still). The movement transferred the global center of contemporary art from Paris to New York and defined the aesthetic culture of post-war America."},
+  baroque: {period:"c. 1600–1750, Europe",text:"The Baroque emerged from the Counter-Reformation as the Catholic Church used art and architecture to inspire devotion and awe. Characterized by dramatic lighting (chiaroscuro/tenebrism), intense emotion, rich color, and dynamic movement, it spread from Rome across Europe to Spain, Flanders, the Dutch Republic, and France. Each region developed its own variant: Caravaggio's stark realism in Italy, Rubens's exuberant mythology in Flanders, and Rembrandt and Vermeer's intimate naturalism in Protestant Holland."},
+  pop_art: {period:"1950s–1970s, UK and USA",text:"Pop Art emerged simultaneously in Britain (with the Independent Group) and the USA in the late 1950s, reacting against Abstract Expressionism's emotional seriousness by embracing mass media, advertising, comics, film, and consumer goods as subject matter. American Pop—Warhol, Lichtenstein, Johns, Rauschenberg—was starker and more confrontational; British Pop (Hamilton, Paolozzi, Hockney) was more playful and interested in American popular culture as an exotic phenomenon. Pop collapsed the distinction between high and low culture definitively."},
+  renaissance: {period:"c. 1300–1600, Italy and Northern Europe",text:"The Renaissance (French for 'rebirth') began in Florence and Rome as scholars, artists, and patrons rediscovered classical Greek and Roman culture after the medieval period. Central innovations included linear perspective (Brunelleschi, Alberti), systematic study of human anatomy, humanist philosophy, and oil paint (pioneered in the North by van Eyck). The High Renaissance (c.1490–1520) produced Leonardo, Michelangelo, and Raphael—artists who became the defining standard for Western art for four centuries. The Northern Renaissance (Dürer, Holbein) added landscape, portraiture, and printmaking."},
+  minimalism: {period:"1960s–1970s, USA",text:"Minimalism emerged in New York in the early 1960s as artists reacted against Abstract Expressionism's subjective romanticism. Taking its cue from the cool geometry of Barnett Newman and Ad Reinhardt, Minimalist artists (Judd, Andre, Flavin, Stella, Morris) used industrial materials, simple geometric forms, and serial repetition to create work that was about the physical experience of the object in real space—not about symbolism, expression, or illusion. It profoundly influenced design, architecture, fashion, and music."},
+  expressionism: {period:"1905–1930s, Germany and Austria",text:"Expressionism was not a single movement but a broad tendency across German and Austrian painting, printmaking, theatre, cinema, and literature. Its two main groups were Die Brücke (The Bridge, Dresden, 1905) and Der Blaue Reiter (The Blue Rider, Munich, 1911). United by the desire to express emotional truth over optical reality, Expressionists distorted form, intensified color, and used raw technique to convey anxiety, desire, and spiritual crisis. The movement was suppressed under the Nazis, who branded it 'degenerate art.'"},
+  street_art: {period:"1970s–present, global",text:"Street art grew out of the New York graffiti scene of the 1970s, when artists such as Taki 183 began tagging the city's surfaces. By the 1980s, more elaborate styles emerged—wildstyle lettering, elaborate murals, stencil-based imagery—and figures like Basquiat and Haring moved from the street to the gallery. The Internet and social media in the 2000s globalized street art overnight, making Banksy a household name. Today street art encompasses muralism, paste-ups, yarn bombing, projection mapping, and much more."}
+};
+
+// ══════════════════════════════════════════════════════════════
+// ARTWORK LINKS — key artworks mentioned in quizzes, with
+// public-domain image links (Wikimedia / Google Arts & Culture)
+// ══════════════════════════════════════════════════════════════
+const ARTWORK_LINKS = {
+  // Impressionism
+  "Impression, Sunrise": {url:"https://en.wikipedia.org/wiki/Impression,_Sunrise", label:"View on Wikipedia"},
+  "Water Lilies": {url:"https://en.wikipedia.org/wiki/Water_Lilies_(Monet_series)", label:"View on Wikipedia"},
+  "The Star": {url:"https://en.wikipedia.org/wiki/L%27%C3%89toile_(Degas)", label:"View on Wikipedia"},
+  "L'Absinthe": {url:"https://en.wikipedia.org/wiki/L%27Absinthe_(Degas)", label:"View on Wikipedia"},
+  "Dance at Le Moulin de la Galette": {url:"https://en.wikipedia.org/wiki/Bal_du_moulin_de_la_Galette", label:"View on Wikipedia"},
+  "The Cradle": {url:"https://en.wikipedia.org/wiki/The_Cradle_(Morisot)", label:"View on Wikipedia"},
+  "Haystacks": {url:"https://en.wikipedia.org/wiki/Haystacks_(Monet_series)", label:"View on Wikipedia"},
+  "Rouen Cathedral series": {url:"https://en.wikipedia.org/wiki/Rouen_Cathedral_series_(Monet)", label:"View on Wikipedia"},
+  "Luncheon of the Boating Party": {url:"https://en.wikipedia.org/wiki/Luncheon_of_the_Boating_Party", label:"View on Wikipedia"},
+  "The Bellelli Family": {url:"https://en.wikipedia.org/wiki/The_Bellelli_Family", label:"View on Wikipedia"},
+  // Cubism
+  "Les Demoiselles d'Avignon": {url:"https://en.wikipedia.org/wiki/Les_Demoiselles_d%27Avignon", label:"View on Wikipedia"},
+  "Guernica": {url:"https://en.wikipedia.org/wiki/Guernica_(Picasso)", label:"View on Wikipedia"},
+  "Houses at l'Estaque": {url:"https://en.wikipedia.org/wiki/Houses_at_l%27Estaque", label:"View on Wikipedia"},
+  "Three Musicians": {url:"https://en.wikipedia.org/wiki/Three_Musicians", label:"View on Wikipedia"},
+  "Girl Before a Mirror": {url:"https://en.wikipedia.org/wiki/Girl_Before_a_Mirror", label:"View on Wikipedia"},
+  "Ma Jolie": {url:"https://en.wikipedia.org/wiki/Ma_Jolie_(Picasso)", label:"View on Wikipedia"},
+  // Surrealism
+  "The Persistence of Memory": {url:"https://en.wikipedia.org/wiki/The_Persistence_of_Memory", label:"View on Wikipedia"},
+  "The Treachery of Images": {url:"https://en.wikipedia.org/wiki/The_Treachery_of_Images", label:"View on Wikipedia"},
+  "The Son of Man": {url:"https://en.wikipedia.org/wiki/The_Son_of_Man", label:"View on Wikipedia"},
+  "The Two Fridas": {url:"https://en.wikipedia.org/wiki/The_Two_Fridas", label:"View on Wikipedia"},
+  "Harlequin's Carnival": {url:"https://en.wikipedia.org/wiki/Harlequin%27s_Carnival", label:"View on Wikipedia"},
+  // Abstract Expressionism
+  "Lavender Mist": {url:"https://en.wikipedia.org/wiki/Lavender_Mist", label:"View on Wikipedia"},
+  "Autumn Rhythm": {url:"https://en.wikipedia.org/wiki/Autumn_Rhythm", label:"View on Wikipedia"},
+  "Woman I": {url:"https://en.wikipedia.org/wiki/Woman_I", label:"View on Wikipedia"},
+  "Excavation": {url:"https://en.wikipedia.org/wiki/Excavation_(de_Kooning)", label:"View on Wikipedia"},
+  // Baroque
+  "The Night Watch": {url:"https://en.wikipedia.org/wiki/The_Night_Watch", label:"View on Wikipedia"},
+  "Girl with a Pearl Earring": {url:"https://en.wikipedia.org/wiki/Girl_with_a_Pearl_Earring", label:"View on Wikipedia"},
+  "The Milkmaid": {url:"https://en.wikipedia.org/wiki/The_Milkmaid_(Vermeer)", label:"View on Wikipedia"},
+  "The Calling of Saint Matthew": {url:"https://en.wikipedia.org/wiki/The_Calling_of_Saint_Matthew_(Caravaggio)", label:"View on Wikipedia"},
+  "The Descent from the Cross": {url:"https://en.wikipedia.org/wiki/The_Descent_from_the_Cross_(Rubens,_Antwerp)", label:"View on Wikipedia"},
+  "Judith Slaying Holofernes": {url:"https://en.wikipedia.org/wiki/Judith_Slaying_Holofernes_(Artemisia_Gentileschi,_Florence)", label:"View on Wikipedia"},
+  "The Anatomy Lesson": {url:"https://en.wikipedia.org/wiki/The_Anatomy_Lesson_of_Dr._Nicolaes_Tulp", label:"View on Wikipedia"},
+  // Pop Art
+  "Campbell's Soup Cans": {url:"https://en.wikipedia.org/wiki/Campbell%27s_Soup_Cans", label:"View on Wikipedia"},
+  "Marilyn Diptych": {url:"https://en.wikipedia.org/wiki/Marilyn_Diptych", label:"View on Wikipedia"},
+  "Whaam!": {url:"https://en.wikipedia.org/wiki/Whaam!", label:"View on Wikipedia"},
+  "Drowning Girl": {url:"https://en.wikipedia.org/wiki/Drowning_Girl", label:"View on Wikipedia"},
+  "Flag": {url:"https://en.wikipedia.org/wiki/Flag_(Johns)", label:"View on Wikipedia"},
+  "Bed (Rauschenberg)": {url:"https://en.wikipedia.org/wiki/Bed_(Rauschenberg)", label:"View on Wikipedia"},
+  // Renaissance
+  "Mona Lisa": {url:"https://en.wikipedia.org/wiki/Mona_Lisa", label:"View on Wikipedia"},
+  "The Last Supper": {url:"https://en.wikipedia.org/wiki/The_Last_Supper_(Leonardo)", label:"View on Wikipedia"},
+  "David": {url:"https://en.wikipedia.org/wiki/David_(Michelangelo)", label:"View on Wikipedia"},
+  "Sistine Chapel ceiling": {url:"https://en.wikipedia.org/wiki/Sistine_Chapel_ceiling", label:"View on Wikipedia"},
+  "The School of Athens": {url:"https://en.wikipedia.org/wiki/The_School_of_Athens", label:"View on Wikipedia"},
+  "The Birth of Venus": {url:"https://en.wikipedia.org/wiki/The_Birth_of_Venus_(Botticelli)", label:"View on Wikipedia"},
+  "Primavera": {url:"https://en.wikipedia.org/wiki/Primavera_(Botticelli)", label:"View on Wikipedia"},
+  "Venus of Urbino": {url:"https://en.wikipedia.org/wiki/Venus_of_Urbino", label:"View on Wikipedia"},
+  "Assumption of the Virgin": {url:"https://en.wikipedia.org/wiki/Assumption_of_the_Virgin_(Titian)", label:"View on Wikipedia"},
+};
+
+// Helper: detect artwork name in question text and return link if found
+function detectArtworkLink(questionText) {
+  for (const [title, info] of Object.entries(ARTWORK_LINKS)) {
+    if (questionText.includes(title) || questionText.includes("'" + title + "'") || questionText.includes('"' + title + '"')) {
+      return {...info, title};
+    }
+  }
+  return null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// GENRES
+// ══════════════════════════════════════════════════════════════
+const GENRES = [
+  {id:"impressionism",name:"Impressionism",color:"#E63946",accent:"#FFD60A",emoji:"🌅",description:"Capturing light and movement in loose, visible brushstrokes.",artists:["Claude Monet","Pierre-Auguste Renoir","Edgar Degas","Camille Pissarro","Berthe Morisot"]},
+  {id:"cubism",name:"Cubism",color:"#1D3557",accent:"#E63946",emoji:"🔷",description:"Fragmenting subjects into geometric shapes from multiple viewpoints.",artists:["Pablo Picasso","Georges Braque","Juan Gris","Fernand Léger","Robert Delaunay"]},
+  {id:"surrealism",name:"Surrealism",color:"#7B2D8B",accent:"#FFD60A",emoji:"🌙",description:"Dreams and the unconscious mind brought to vivid visual life.",artists:["Salvador Dalí","René Magritte","Frida Kahlo","Max Ernst","Joan Miró"]},
+  {id:"abstract_expressionism",name:"Abstract Expressionism",color:"#C1440E",accent:"#1D3557",emoji:"🎨",description:"Emotion-driven abstraction through spontaneous, gestural painting.",artists:["Jackson Pollock","Mark Rothko","Willem de Kooning","Lee Krasner","Franz Kline"]},
+  {id:"baroque",name:"Baroque",color:"#8B3A1E",accent:"#FFD60A",emoji:"👑",description:"Dramatic light, grandeur, and intense emotion in the 17th century.",artists:["Caravaggio","Rembrandt van Rijn","Peter Paul Rubens","Johannes Vermeer","Artemisia Gentileschi"]},
+  {id:"pop_art",name:"Pop Art",color:"#D4AC0D",accent:"#1D3557",emoji:"💥",description:"Bold, graphic art inspired by popular culture and mass media.",artists:["Andy Warhol","Roy Lichtenstein","Jasper Johns","Robert Rauschenberg","Claes Oldenburg"]},
+  {id:"renaissance",name:"Renaissance",color:"#2D6A4F",accent:"#FFD60A",emoji:"🏛️",description:"Rebirth of classical ideals: humanism, perspective, and beauty.",artists:["Leonardo da Vinci","Michelangelo","Raphael","Sandro Botticelli","Titian"]},
+  {id:"minimalism",name:"Minimalism",color:"#2c2c3a",accent:"#E63946",emoji:"◼",description:"Stripping art to its essential forms, colors, and geometry.",artists:["Donald Judd","Agnes Martin","Frank Stella","Dan Flavin","Carl Andre"]},
+  {id:"expressionism",name:"Expressionism",color:"#c85a1e",accent:"#1D3557",emoji:"😱",description:"Distorted reality to convey raw emotional states and inner turmoil.",artists:["Edvard Munch","Ernst Ludwig Kirchner","Egon Schiele","Emil Nolde","Wassily Kandinsky"]},
+  {id:"street_art",name:"Street Art",color:"#1a4a7a",accent:"#FFD60A",emoji:"🏙️",description:"Public, often politically charged art in urban environments.",artists:["Banksy","Jean-Michel Basquiat","Shepard Fairey","Keith Haring","Os Gemeos"]},
+];
+
+// ══════════════════════════════════════════════════════════════
+// QUIZ DATA (Impressionism and Cubism full; others generated)
+// ══════════════════════════════════════════════════════════════
+const QUIZZES = {
+  impressionism:[
+    {title:"Origins & History",questions:[
+      {q:"In what year was the first Impressionist exhibition held in Paris?",options:["1864","1874","1884","1890"],answer:1},
+      {q:"The term 'Impressionism' was coined based on which Monet painting?",options:["Water Lilies","Haystacks","Impression, Sunrise","The Luncheon"],answer:2},
+      {q:"Which city was the birthplace of the Impressionist movement?",options:["London","New York","Paris","Rome"],answer:2},
+      {q:"How many Impressionist exhibitions were held in total (1874–1886)?",options:["5","6","8","10"],answer:2},
+      {q:"Which critic first used 'Impressionism' mockingly?",options:["John Ruskin","Louis Leroy","Charles Baudelaire","Émile Zola"],answer:1},
+      {q:"Which artist refused to exhibit in all 8 Impressionist shows?",options:["Degas","Renoir","Édouard Manet","Morisot"],answer:2},
+      {q:"Impressionism was partly a reaction against which institution?",options:["The Louvre","The Paris Salon","École des Beaux-Arts","The Académie Royale"],answer:1},
+      {q:"Which country's art influenced Impressionists with woodblock prints?",options:["China","India","Japan","Korea"],answer:2},
+      {q:"The Impressionists frequently painted en plein air — what does this mean?",options:["In museums","Outdoors","At night","From memory"],answer:1},
+      {q:"Berthe Morisot was married to the brother of which famous artist?",options:["Degas","Cézanne","Édouard Manet","Renoir"],answer:2},
+      {q:"Which American artist studied under Degas and exhibited with the Impressionists?",options:["Georgia O'Keeffe","Mary Cassatt","Helen Frankenthaler","Faith Ringgold"],answer:1},
+      {q:"Claude Monet was born in which city?",options:["Lyon","Bordeaux","Paris","Nice"],answer:2},
+      {q:"In which decade did Impressionism begin?",options:["1840s","1850s","1860s/1870s","1880s"],answer:2},
+      {q:"Renoir's 'Luncheon of the Boating Party' is housed in which museum?",options:["Musée d'Orsay","MoMA","The Phillips Collection","The Louvre"],answer:2},
+      {q:"Camille Pissarro was from which Caribbean island?",options:["Martinique","St. Croix","St. Thomas","Barbados"],answer:1},
+      {q:"Which Impressionist was known for painting ballet dancers?",options:["Monet","Renoir","Degas","Pissarro"],answer:2},
+      {q:"What was the name of the café where Impressionists gathered in Paris?",options:["Café de Flore","Café Guerbois","Le Procope","Café de la Paix"],answer:1},
+      {q:"Which museum in Paris holds the world's largest Impressionist collection?",options:["The Louvre","Centre Pompidou","Musée d'Orsay","Petit Palais"],answer:2},
+      {q:"Monet's famous garden and pond are located in which town?",options:["Barbizon","Auvers-sur-Oise","Giverny","Honfleur"],answer:2},
+      {q:"Which Impressionist later developed Post-Impressionism as his own style?",options:["Monet","Renoir","Paul Cézanne","Degas"],answer:2},
+      {q:"What technique did Impressionists use to capture light with color?",options:["Chiaroscuro","Sfumato","Broken color/short brushstrokes","Pointillism"],answer:2},
+      {q:"Morisot's 'The Cradle' was shown at which exhibition?",options:["First Impressionist Exhibition 1874","Paris Salon 1875","Second Exhibition 1876","London Royal Academy"],answer:0},
+      {q:"Pissarro is considered the 'father' of which related movement?",options:["Fauvism","Neo-Impressionism","Cubism","Dadaism"],answer:1},
+      {q:"Which Impressionist was almost completely blind by the end of his career?",options:["Renoir","Pissarro","Monet","Degas"],answer:2},
+      {q:"Degas preferred which medium over oil painting in his later career?",options:["Watercolor","Pastel","Fresco","Gouache"],answer:1},
+    ]},
+    {title:"Techniques & Style",questions:[
+      {q:"What is the primary subject most associated with Impressionist painting?",options:["Still life","Mythology","Everyday modern life and landscapes","Religious scenes"],answer:2},
+      {q:"Which color theory influence is central to Impressionist color use?",options:["Newton's prism","Chevreul's simultaneous contrast","Goethe's Farbenlehre","Munsell's color system"],answer:1},
+      {q:"Short, visible brushstrokes are a hallmark of Impressionism. What do they capture?",options:["Detail and texture","Transient light and movement","Photographic realism","Classical idealism"],answer:1},
+      {q:"Impressionists often avoided using which color in shadows?",options:["Blue","Green","Black","Red"],answer:2},
+      {q:"What is 'broken color' in Impressionist technique?",options:["Painting on cracked canvas","Placing pure colors side by side unmixed","Using black and white only","Scraping off paint layers"],answer:1},
+      {q:"Monet's 'series paintings' depicted subjects at different times of what?",options:["Year only","Day and season/light conditions","Night only","Historical periods"],answer:1},
+      {q:"Impressionists often painted on which type of prepared canvas?",options:["Dark-primed","Light/white-primed","Unprimed raw linen","Paper"],answer:1},
+      {q:"The optical mixing of colors is related to which scientific principle?",options:["Absorption","Refraction","Additive color mixing perceived by the eye","Subtractive pigment mixing"],answer:2},
+      {q:"What distinguishes Impressionist composition from academic painting?",options:["More symmetry","Informal, snapshot-like framing","Precise geometry","Strict perspective"],answer:1},
+      {q:"Which Impressionist was known for highly textured, almost sculptural paint application?",options:["Monet","Renoir","Pissarro","Morisot"],answer:0},
+      {q:"Japanese woodblock prints influenced Impressionists in which way?",options:["Dark tonal contrasts","Flat areas of color and unusual cropping","Gold leaf technique","Fresco texture"],answer:1},
+      {q:"Degas's ballet scenes are notable for capturing figures in what state?",options:["Posed portraits","Candid, off-guard moments","Mythological costumes","Religious devotion"],answer:1},
+      {q:"What new technology helped Impressionists paint outdoors more easily?",options:["Electric lights","Photography (freed them from realism)","Tube oil paints","Acrylic medium"],answer:2},
+      {q:"Renoir's style is especially known for depicting which quality of light?",options:["Harsh midday sun","Dappled, filtered sunlight","Moonlight","Candlelight"],answer:1},
+      {q:"Which Impressionist's work is most closely linked to water and reflections?",options:["Degas","Renoir","Monet","Pissarro"],answer:2},
+      {q:"What does 'plein air' painting require of the artist?",options:["Working quickly to catch changing light","Precision and slow detailing","Working from photographs","Using pre-mixed studio colors"],answer:0},
+      {q:"Morisot's brushwork is often described as:",options:["Tight and academic","Fluid and sketch-like","Geometric","Photorealistic"],answer:1},
+      {q:"Which technique blurs outlines intentionally in Impressionism?",options:["Sfumato","Soft, loose brushwork at edges","Ink washing","Glazing"],answer:1},
+      {q:"What atmosphere did Impressionists most often try to recreate?",options:["Timeless classical grandeur","A fleeting, specific moment in time","Dreamlike unreality","Industrial darkness"],answer:1},
+      {q:"Monet's Water Lilies series was painted during which condition that affected his work?",options:["Arthritis in his hand","Cataracts affecting his vision","Deafness","Paralysis"],answer:1},
+      {q:"Which Impressionist also worked extensively as a sculptor?",options:["Renoir","Monet","Degas","Pissarro"],answer:2},
+      {q:"Impressionist skies are typically painted with:",options:["Photographic accuracy","Dramatic storms","Luminous, varied color strokes","Flat monotone wash"],answer:2},
+      {q:"Pissarro's cityscapes often depicted which theme?",options:["Ancient ruins","Paris boulevards and modern urban life","Industrial factories","Royal gardens"],answer:1},
+      {q:"Which paint brand/format was crucial for plein air Impressionism?",options:["Gouache in jars","Pre-mixed house paint","Portable oil paint in metal tubes","Watercolor tablets"],answer:2},
+      {q:"Renoir's late style became more focused on which subject?",options:["Seascapes","Female nudes in nature","Urban crowds","Still life"],answer:1},
+    ]},
+    {title:"Key Artworks",questions:[
+      {q:"Monet's 'Water Lilies' series consists of approximately how many paintings?",options:["25","100","250","500"],answer:2},
+      {q:"Where are Monet's large Water Lilies murals permanently displayed?",options:["Musée d'Orsay","The Orangerie, Paris","The Louvre","Centre Pompidou"],answer:1},
+      {q:"Renoir's 'Dance at Le Moulin de la Galette' depicts a scene at which type of venue?",options:["Opera house","Outdoor dance hall","Private mansion","Seaside café"],answer:1},
+      {q:"Degas's 'L'Absinthe' depicts figures in what mood/state?",options:["Joyful celebration","Isolated melancholy","Romantic embrace","Athletic exertion"],answer:1},
+      {q:"Monet's 'Haystacks' series focused on depicting what?",options:["Grain stacks across seasons and times of day","Actual haystacks only in summer","Workers in fields","Farm animals"],answer:0},
+      {q:"Which Monet series depicted a Gothic cathedral at different times of day?",options:["Houses of Parliament","Rouen Cathedral","Notre-Dame","Chartres Cathedral"],answer:1},
+      {q:"Morisot's 'Summer's Day' focuses on two women doing what?",options:["Painting outdoors","Boating on a lake","Walking in a park","Shopping in Paris"],answer:1},
+      {q:"Renoir's 'La Grenouillère' was painted alongside works by which other artist?",options:["Degas","Monet","Pissarro","Cézanne"],answer:1},
+      {q:"Degas's 'The Star' depicts a ballerina doing what?",options:["Rehearsing backstage","Bowing on stage in the spotlight","Getting dressed","Resting injured"],answer:1},
+      {q:"Monet's 'Impression, Sunrise' depicts the port of which city?",options:["Paris","Rouen","Le Havre","Bordeaux"],answer:2},
+      {q:"Renoir's 'The Swing' is set in which location?",options:["A formal garden","The garden of Montmartre","A country estate","The Tuileries"],answer:1},
+      {q:"Pissarro's series of paintings of Paris boulevards were made from:",options:["Street level","Upper-floor windows/balconies","Rooftops only","Across the Seine"],answer:1},
+      {q:"Degas's 'The Bellelli Family' is which type of painting?",options:["Landscape","Group portrait","Mythological scene","Self-portrait"],answer:1},
+      {q:"Monet painted the Thames River and Houses of Parliament from which city?",options:["Paris","London","Brussels","Amsterdam"],answer:1},
+      {q:"Renoir's 'Umbrellas' hangs in which museum?",options:["Musée d'Orsay","National Gallery, London","MoMA","Hermitage"],answer:1},
+      {q:"Morisot's 'The Wet Nurse Angèle Feeding Julie Manet' has personal significance because:",options:["It was her first painting","Julie was her own daughter","She won the Salon with it","It was stolen and recovered"],answer:1},
+      {q:"Degas's 'At the Races' reflects his interest in which technology of motion?",options:["Trains","Steamboats","Photography and Muybridge's motion studies","Cinematography"],answer:2},
+      {q:"Which Monet work is considered the catalyst for the Impressionist movement name?",options:["Water Lilies","Haystacks","Impression, Sunrise","Rouen Cathedral"],answer:2},
+      {q:"Renoir's 'Luncheon of the Boating Party' features people at a riverside what?",options:["Fishing dock","Restaurant terrace","Rowing club","Garden party"],answer:1},
+      {q:"Pissarro's 'The Boulevard Montmartre at Night' is unusual because it depicts:",options:["Daytime scene","Nighttime Paris with artificial lighting","A storm","An empty street"],answer:1},
+      {q:"Morisot's work often focused on scenes of:",options:["Battlefields","Domestic and intimate female life","Industrial landscapes","Ancient mythology"],answer:1},
+      {q:"Degas's pastel works of bathing women are known for their:",options:["Posed, formal composition","Candid, voyeuristic viewpoint","Religious symbolism","Portrait-like faces"],answer:1},
+      {q:"Monet built his famous water garden at Giverny by:",options:["Finding a natural pond","Diverting a river stream","Buying an existing estate garden","Painting it from imagination"],answer:1},
+      {q:"Renoir's 'Girl with a Watering Can' is held in which American collection?",options:["The Phillips Collection","MoMA","The Art Institute of Chicago","National Gallery of Art, DC"],answer:3},
+      {q:"Which Degas artwork caused controversy for its unflattering depiction of women?",options:["The Star","L'Absinthe","The Tub","Before the Race"],answer:1},
+    ]},
+    {title:"Artists Deep Dive",questions:[
+      {q:"What was Claude Monet's first name at birth?",options:["Claude","Oscar","Pierre","Henri"],answer:1},
+      {q:"Renoir suffered from which debilitating condition in his later years?",options:["Blindness","Rheumatoid arthritis","Deafness","Parkinson's disease"],answer:1},
+      {q:"Degas's father was from which country?",options:["France","Italy","Spain","Belgium"],answer:1},
+      {q:"Camille Pissarro was a mentor to which two Post-Impressionists?",options:["Van Gogh and Gauguin","Cézanne and Gauguin","Seurat and Signac","Toulouse-Lautrec and Bonnard"],answer:1},
+      {q:"Berthe Morisot exhibited with the Impressionists while also being whose model?",options:["Monet's","Renoir's","Édouard Manet's","Degas's"],answer:2},
+      {q:"Which Impressionist was known for his friendship with author Émile Zola?",options:["Degas","Renoir","Monet","Paul Cézanne"],answer:3},
+      {q:"Monet destroyed how many of his own paintings before his death?",options:["0","About 60","Over 500","About 15"],answer:1},
+      {q:"Renoir was born in which French city?",options:["Paris","Limoges","Lyon","Bordeaux"],answer:1},
+      {q:"Degas studied at which famous French art school?",options:["École des Beaux-Arts","Académie Julian","École des Arts Décoratifs","Atelier Cormon"],answer:0},
+      {q:"Pissarro's political beliefs are best described as:",options:["Monarchist","Anarchist","Liberal","Socialist"],answer:1},
+      {q:"Morisot was the first woman to do what in French art history?",options:["Exhibit at the Louvre","Join the Impressionist group as a full exhibiting member","Win the Prix de Rome","Teach at a major academy"],answer:1},
+      {q:"Monet's second wife was named:",options:["Camille Doncieux","Alice Hoschedé","Blanche Monet","Suzanne Hoschedé"],answer:1},
+      {q:"Which Impressionist had a profound influence on Henri Matisse?",options:["Degas","Monet","Pissarro","Renoir"],answer:2},
+      {q:"Renoir's son Jean became famous in which field?",options:["Sculpture","Film directing","Literature","Architecture"],answer:1},
+      {q:"Degas was famously difficult in social situations and known for his:",options:["Warmth and generosity","Sharp tongue and misanthropy","Excessive drinking","Religious devotion"],answer:1},
+      {q:"Morisot died in which year?",options:["1895","1905","1915","1920"],answer:0},
+      {q:"Which artist influenced Degas most during his Italian journey?",options:["Raphael","Ingres","Delacroix","Rubens"],answer:1},
+      {q:"Pissarro's son Lucien also became:",options:["A sculptor","A painter and printmaker","A musician","A politician"],answer:1},
+      {q:"Monet's house at Giverny is now:",options:["Demolished","A museum open to the public","A private residence","An art school"],answer:1},
+      {q:"Renoir's 'Grand Nudes' phase was influenced by which old master?",options:["Rembrandt","Rubens","Titian","Raphael"],answer:1},
+      {q:"Degas had which nationality in addition to French?",options:["Italian (partly)","Belgian","Algerian","British"],answer:0},
+      {q:"Morisot's daughter Julie later published what?",options:["A novel","Her mother's memoirs and journal","An art history book","A catalog of Impressionist works"],answer:1},
+      {q:"Pissarro was born in which year?",options:["1820","1830","1840","1850"],answer:1},
+      {q:"Which Impressionist was most interested in social realism and working-class subjects?",options:["Monet","Renoir","Degas","Pissarro"],answer:3},
+      {q:"Renoir, in later life, had paintbrushes tied to his hands because:",options:["He was blind","Arthritis made gripping impossible","He preferred the feel","He lost his fingers in an accident"],answer:1},
+    ]},
+    {title:"Legacy & Influence",questions:[
+      {q:"Which movement directly followed and reacted against Impressionism?",options:["Cubism","Post-Impressionism","Fauvism","Dadaism"],answer:1},
+      {q:"Impressionism's approach to light influenced which later movement of painting with dots?",options:["Fauvism","Pointillism/Neo-Impressionism","Cubism","Futurism"],answer:1},
+      {q:"Which American city has a major museum named after Impressionism?",options:["Los Angeles","Boston","Chicago","Washington DC"],answer:1},
+      {q:"The open, loose brushwork of Impressionism influenced which 20th century American movement?",options:["Pop Art","Abstract Expressionism","Minimalism","Conceptual Art"],answer:1},
+      {q:"Monet's Water Lilies directly inspired which artistic concept?",options:["Color field painting","Performance art","Video art","Conceptual art"],answer:0},
+      {q:"Impressionism is considered revolutionary because it shifted art's focus from:",options:["Color to form","Historical/religious subjects to contemporary life","Oil to watercolor","Indoor to outdoor painting only"],answer:1},
+      {q:"Which Post-Impressionist was deeply influenced by Pissarro's technique?",options:["Gauguin","Van Gogh","Both Van Gogh and Cézanne","Seurat"],answer:2},
+      {q:"Impressionist auction prices reached record highs in which decade?",options:["1950s","1970s","1990s","2010s"],answer:2},
+      {q:"Renoir's influence is most visible in which aspect of later commercial art?",options:["Industrial design","Advertising illustration and pastel color palettes","Architecture","Typography"],answer:1},
+      {q:"Degas's use of unusual angles influenced which later art forms?",options:["Conceptual art only","Photography and cinema composition","Sculpture only","Printmaking only"],answer:1},
+      {q:"Which Impressionist principle most directly challenged the Paris Academy's power?",options:["Painting outdoors","Exhibiting independently outside the official Salon","Using bright colors","Painting modern subjects"],answer:1},
+      {q:"Morisot's legacy helped pave the way for:",options:["Abstract art","Greater recognition of women artists in art history","Street art","Digital art"],answer:1},
+      {q:"Which photographer's motion studies influenced Degas's depictions of movement?",options:["Nadar","Eadweard Muybridge","Henri Cartier-Bresson","Daguerre"],answer:1},
+      {q:"Impressionism's embrace of everyday subjects influenced which literary movement?",options:["Romanticism","Naturalism and Realist literature","Symbolism","Modernism"],answer:1},
+      {q:"Which famous composer's music is often compared to Impressionist painting?",options:["Beethoven","Claude Debussy","Richard Wagner","Johannes Brahms"],answer:1},
+      {q:"Today, Impressionist works regularly sell for:",options:["Under $1 million","$1–5 million","Tens to hundreds of millions of dollars","$500,000"],answer:2},
+      {q:"Pissarro's anarchist beliefs tied art to which social ideal?",options:["Elite culture","Art for and by ordinary people","National pride","Religious values"],answer:1},
+      {q:"The Musée d'Orsay, built in a converted what, houses Impressionist masterworks?",options:["Palace","Factory","Railway station","Prison"],answer:2},
+      {q:"Monet's late Water Lilies influenced which specific Abstract Expressionist?",options:["Pollock","Rothko","de Kooning","All of the above"],answer:3},
+      {q:"Which country outside France most enthusiastically collected Impressionist work early on?",options:["Germany","England","United States","Russia"],answer:2},
+      {q:"Renoir's influence on which artist is visible in warm, sensual depictions of women?",options:["Henri Matisse","Pablo Picasso","Pierre Bonnard","Toulouse-Lautrec"],answer:2},
+      {q:"The Impressionists' use of color laid the foundation for:",options:["Black and white photography","Modern color theory in design and fine art","Traditional fresco revival","Engraving techniques"],answer:1},
+      {q:"Which technology allowed Impressionism's influence to spread globally quickly?",options:["Television","Color photography and printed art reproductions","The internet","Radio"],answer:1},
+      {q:"Morisot's works were undervalued for much of art history due to:",options:["Low quality","Gender bias and being seen as a 'minor' artist","Few surviving works","Excessive abstraction"],answer:1},
+      {q:"Which annual event celebrates Impressionism's legacy in Giverny each spring?",options:["The Salon revival","Garden festival and art exhibitions","The Prix de Monet","Paris Art Week"],answer:1},
+    ]},
+  ],
+  cubism:[
+    {title:"Origins & History",questions:[
+      {q:"In approximately which year did Cubism emerge?",options:["1895","1907","1920","1935"],answer:1},
+      {q:"Which painting by Picasso is considered the proto-Cubist breakthrough work?",options:["Guernica","Les Demoiselles d'Avignon","The Weeping Woman","Ma Jolie"],answer:1},
+      {q:"Cubism was co-founded by Picasso and which other artist?",options:["Juan Gris","Fernand Léger","Georges Braque","Robert Delaunay"],answer:2},
+      {q:"Which African art tradition influenced the development of Cubism?",options:["Egyptian hieroglyphics","African masks and sculptures","Kente weaving","Cave paintings"],answer:1},
+      {q:"What are the two main phases of Cubism?",options:["Early and Late","Analytical and Synthetic","Geometric and Organic","French and Spanish"],answer:1},
+      {q:"Analytical Cubism (c.1908–1912) is characterized by:",options:["Bright colors and collage","Monochromatic, fragmented overlapping planes","Flat geometric shapes in bold colors","Realistic rendering with geometric backgrounds"],answer:1},
+      {q:"Synthetic Cubism introduced which new technique to fine art?",options:["Oil painting","Collage and mixed media","Watercolor","Fresco"],answer:1},
+      {q:"Picasso was born in which country?",options:["France","Portugal","Spain","Italy"],answer:2},
+      {q:"Georges Braque served in which war, temporarily halting his Cubist development?",options:["Franco-Prussian War","Boer War","World War I","World War II"],answer:2},
+      {q:"Which philosopher's ideas about multiple perspectives influenced Cubist thought?",options:["Nietzsche","Henri Bergson","Descartes","Kant"],answer:1},
+      {q:"The term 'Cubism' was coined by critic Louis Vauxcelles, who compared Braque's houses to:",options:["Triangles","Squares","Cubes","Pyramids"],answer:2},
+      {q:"Juan Gris was born in which city?",options:["Barcelona","Paris","Madrid","Seville"],answer:2},
+      {q:"Fernand Léger's style is sometimes called 'Tubism' because:",options:["He painted in tubes","His forms resemble cylindrical tubes","He used tube paints exclusively","He painted factories with tubes/pipes"],answer:1},
+      {q:"Which dealer heavily promoted Cubism commercially?",options:["Ambroise Vollard","Daniel-Henry Kahnweiler","Paul Durand-Ruel","Peggy Guggenheim"],answer:1},
+      {q:"Picasso's 'Rose Period' immediately preceded Cubism. What was the period before that?",options:["Blue Period","African Period","Green Period","White Period"],answer:0},
+      {q:"Cubism was influenced by Paul Cézanne's approach of depicting subjects from:",options:["A single fixed viewpoint","Multiple viewpoints simultaneously","Below the horizon line","Above, bird's eye only"],answer:1},
+      {q:"Robert Delaunay's color-focused variant of Cubism was called:",options:["Orphism","Futurism","Vorticism","Purism"],answer:0},
+      {q:"Where did Braque and Picasso do much of their early Cubist work together?",options:["Spain","Paris and Céret, France","Italy","Germany"],answer:1},
+      {q:"Picasso's studio at which address became a center of the avant-garde?",options:["Eiffel Tower","Bateau-Lavoir, Montmartre","Luxembourg Gardens","Montparnasse"],answer:1},
+      {q:"Which war influenced Picasso's Cubist masterpiece 'Guernica'?",options:["WW1","WW2","Spanish Civil War","Cold War"],answer:2},
+      {q:"Synthetic Cubism typically features:",options:["Muted earth tones","Brighter colors and recognizable elements/text","Pure abstraction with no recognizable subjects","Photorealistic detail"],answer:1},
+      {q:"In which city was Cubism primarily developed?",options:["Madrid","London","Paris","Berlin"],answer:2},
+      {q:"Which Picasso work marked his turn toward Cubism after African influence?",options:["Guernica","The Old Guitarist","Les Demoiselles d'Avignon","Girl Before a Mirror"],answer:2},
+      {q:"Which major world event disrupted the Cubist movement in 1914?",options:["The Russian Revolution","World War I","The Great Depression","World War II"],answer:1},
+      {q:"Purism, related to Cubism, was developed by Le Corbusier and:",options:["Léger","Amédée Ozenfant","Delaunay","Gris"],answer:1},
+    ]},
+    {title:"Techniques & Style",questions:[
+      {q:"The core principle of Cubism is depicting objects from:",options:["One perfect angle","Multiple viewpoints simultaneously","A bird's-eye view only","A distorted mirror"],answer:1},
+      {q:"Which geometric shape is most fundamental to Cubism?",options:["Circle","Oval","Cylinder and cube-like planes","Triangle"],answer:2},
+      {q:"In Analytical Cubism, the palette is limited to:",options:["Primary colors","Earth tones: browns, grays, ochres","Pastels","Complementary colors"],answer:1},
+      {q:"Collage in Synthetic Cubism often incorporated:",options:["Dried flowers","Newspaper clippings, wallpaper, labels","Photographs","Fabric only"],answer:1},
+      {q:"What is 'passage' in Cubist technique?",options:["Narrative in the painting","Planes that bleed into adjacent planes, connecting forms","A doorway motif","Transition from one color to another"],answer:1},
+      {q:"Cubism rejected what principle fundamental to Western art since the Renaissance?",options:["Color theory","Single-point linear perspective","Oil painting","Figure drawing"],answer:1},
+      {q:"Picasso's use of lettering and text in Cubist works is associated with:",options:["Dada","Synthetic Cubism's papier collé","Abstract Expressionism","Surrealism"],answer:1},
+      {q:"In Cubist portraits, faces often appear:",options:["Perfectly symmetrical","Fragmented with profile and frontal views combined","Abstract blobs","Detailed like photographs"],answer:1},
+      {q:"Braque introduced 'papier collé' — what is this?",options:["Paper sculpture","Glued paper as part of the painting surface","Painted paper","Cut paper collage independently"],answer:1},
+      {q:"What common everyday objects did Braque and Picasso most often depict?",options:["Cars and machines","Guitars, bottles, newspapers, playing cards","Cityscapes","Nudes and flowers"],answer:1},
+      {q:"The flattening of space in Cubism relates to which aspect of perception?",options:["Color blindness","The idea that the mind constructs objects from multiple memories/views","Mathematical precision","Photographic distortion"],answer:1},
+      {q:"Léger's Cubism was more influenced by:",options:["Pointillism","Industry, machines, and modern urban life","Mythology and literature","Nature and landscape"],answer:1},
+      {q:"What is 'simultaneity' in Cubist terms?",options:["Painting simultaneously with two hands","Showing multiple aspects/moments of a subject at once","Two artists collaborating","Using two canvases together"],answer:1},
+      {q:"Gris's Cubism is known for being more:",options:["Chaotic and spontaneous","Structured, precise, and grid-like","Emotionally expressionistic","Organic and curved"],answer:1},
+      {q:"Analytical Cubism typically uses which types of lines?",options:["Soft curves","Diagonal and angular intersecting lines","Perfectly horizontal lines only","Spirals"],answer:1},
+      {q:"Which musical instrument appears most frequently in Cubist paintings?",options:["Violin","Piano","Guitar","Trumpet"],answer:2},
+      {q:"Cubism's fragmented approach is compared to which new technology of image-making?",options:["Film editing/cinema montage","Photography","Television","X-ray imaging"],answer:0},
+      {q:"Delaunay's 'Orphism' added what to Cubism's fragmented planes?",options:["Black outlines","Pure, luminous color contrasts","Text and words","Photographic realism"],answer:1},
+      {q:"Picasso's 'Weeping Woman' is an example of Cubism applied to:",options:["Still life","Landscape","Emotional portraiture","Abstract geometry"],answer:2},
+      {q:"What does 'faceting' mean in Cubism?",options:["Polishing the paint surface","Breaking surfaces into small angled planes like a gem's faces","Adding texture with a palette knife","Layering transparent glazes"],answer:1},
+      {q:"Cubism's ambiguity of figure and ground is called:",options:["Gestalt reversal","Figure-ground ambiguity","Cubist paradox","Visual fragmentation"],answer:1},
+      {q:"Synthetic Cubism often includes what to anchor the image to reality?",options:["Photorealistic passages","Recognizable labels, logos, or text","Anatomical figures","Landscape backgrounds"],answer:1},
+      {q:"In Cubist still lifes, the table surface is often shown:",options:["In perfect perspective","Tilted upward, almost vertically, to display objects clearly","Hidden under a cloth","Absent entirely"],answer:1},
+      {q:"Braque and Picasso's Analytical Cubist works were so similar that:",options:["They signed each other's works as a joke","They sometimes couldn't tell their own works apart","Critics ignored them","They argued constantly about style"],answer:1},
+      {q:"Which Cubist technique involved stacking transparent planes?",options:["Sfumato","Layering overlapping translucent facets","Impasto","Sgraffito"],answer:1},
+    ]},
+    {title:"Key Artworks",questions:[
+      {q:"Les Demoiselles d'Avignon (1907) is now housed in which museum?",options:["The Louvre","Musée Picasso, Paris","MoMA, New York","Tate Modern, London"],answer:2},
+      {q:"Picasso's 'Guernica' depicts the bombing of a town in which country?",options:["France","Spain","Germany","Italy"],answer:1},
+      {q:"Braque's 'Houses at l'Estaque' (1908) is considered what in Cubism's history?",options:["The last Cubist painting","One of the first fully Cubist works","The first collage","A Synthetic Cubist work"],answer:1},
+      {q:"Gris's 'Portrait of Pablo Picasso' (1912) demonstrates which Cubist phase?",options:["Pre-Cubism","Analytical Cubism","Synthetic Cubism","Post-Cubism"],answer:1},
+      {q:"Picasso's 'Ma Jolie' refers to what?",options:["His daughter's nickname","The refrain of a popular song / his girlfriend's nickname","A street in Paris","A type of brush"],answer:1},
+      {q:"Léger's 'The City' (1919) depicts:",options:["A pastoral landscape","An industrial urban environment with bold geometric forms","A seascape","A market scene"],answer:1},
+      {q:"Braque's 'Violin and Candlestick' (1910) belongs to which Cubist phase?",options:["Synthetic","Analytical","Orphic","Pre-Cubist"],answer:1},
+      {q:"Picasso's 'Girl Before a Mirror' (1932) uses Cubist fragmentation to explore:",options:["Political commentary","Duality of identity and self-reflection","Industrial modernity","Pure geometry"],answer:1},
+      {q:"Delaunay's 'Simultaneous Windows' series explores:",options:["Urban night scenes","Color contrasts and light through fragmented planes","Industrial machines","Abstract portraiture"],answer:1},
+      {q:"Gris's 'Still Life with Checked Tablecloth' (1915) is an example of:",options:["Analytical Cubism","Synthetic Cubism","Orphism","Purism"],answer:1},
+      {q:"Picasso's 'Three Musicians' (1921) is an example of:",options:["Analytical Cubism","Synthetic Cubism","Pre-Cubism","Surrealism"],answer:1},
+      {q:"Braque's 'Still Life with Tenora' is notable for including what material?",options:["Real sand","Pasted paper (papier collé)","Mirrors","Actual wire"],answer:1},
+      {q:"Léger's 'Three Women (Le Grand Déjeuner)' (1921) depicts female figures as:",options:["Emotional and expressive","Machine-like, tubular, and monumental","Ethereal and transparent","Realistically proportioned"],answer:1},
+      {q:"'Guernica' was created in response to which 1937 event?",options:["The start of WWII","Nazi-fascist aerial bombing of the Basque town of Guernica","The Spanish Inquisition","A Madrid museum fire"],answer:1},
+      {q:"Gris's 'The Sunblind' (1914) incorporates which Synthetic Cubist element?",options:["Oil on canvas only","Papier collé with pasted wallpaper and newspaper","Wood veneer","Real fabric"],answer:1},
+      {q:"Picasso's 'Bottle of Vieux Marc, Glass, Guitar and Newspaper' is a what?",options:["Fresco","Collage (papier collé)","Watercolor","Pastel"],answer:1},
+      {q:"Delaunay's 'Eiffel Tower' series fragmented what kind of subject?",options:["Human portrait","A landscape","A modern architectural landmark","A still life"],answer:2},
+      {q:"Braque's 'Viaduct at l'Estaque' reduces a landscape to:",options:["Watercolor washes","Geometric facets with limited color","Realistic detail with broken edges","Pure abstraction without subject"],answer:1},
+      {q:"'Les Demoiselles d'Avignon' was shocking partly because the faces resembled:",options:["Classical Greek sculpture","African and Iberian masks","Caricatures","Photographic portraits"],answer:1},
+      {q:"Léger's 'Contrast of Forms' (1913) emphasizes:",options:["Emotion and expression","Pure formal contrast: cylinders, blacks, reds, whites","Atmospheric perspective","Narrative content"],answer:1},
+      {q:"Gris's 'Homage to Pablo Picasso' shows what about his relationship to Cubism?",options:["He rejected Picasso's influence","He deeply admired and built on Picasso's innovations","He copied Picasso's work directly","He painted it as a criticism"],answer:1},
+      {q:"Picasso's 'Weeping Woman' (1937) is related thematically to which other major work?",options:["Les Demoiselles d'Avignon","Guernica","Three Musicians","Girl Before a Mirror"],answer:1},
+      {q:"Braque's late Cubist 'Studio' series (1949–56) depicts his:",options:["Paris apartment","Studio interior with a bird motif","Garden","Brittany seascape"],answer:1},
+      {q:"Which Picasso sculpture applied Cubist fragmentation to three dimensions?",options:["Man with a Lamb","The Goat","Guitar (1914, sheet metal)","Head of a Woman"],answer:2},
+      {q:"Delaunay's 'Homage to Blériot' celebrates:",options:["A painter friend","The first airplane flight across the English Channel","A bicycle race","A solar eclipse"],answer:1},
+    ]},
+    {title:"Artists Deep Dive",questions:[
+      {q:"Pablo Picasso's full birth name has how many parts?",options:["3","5","9 names total","23 names"],answer:3},
+      {q:"Georges Braque was trained originally as a:",options:["Sculptor","House painter and decorator","Printmaker","Photographer"],answer:1},
+      {q:"Juan Gris's real name was:",options:["Juan Gris","José Victoriano González-Pérez","Juan García","José Cubista"],answer:1},
+      {q:"Fernand Léger fought in WWI and was deeply affected by:",options:["Classical art in museums","The beauty of war machinery and ordinary soldiers","Religious conversion","Abstract music"],answer:1},
+      {q:"Robert Delaunay's wife Sonia was also a famous artist known for:",options:["Photography","Textile and fashion design using geometric color","Sculpture","Portraiture"],answer:1},
+      {q:"Picasso lived in how many countries during his life?",options:["1 (France)","2 (Spain, France)","3 (Spain, France, USA)","4"],answer:1},
+      {q:"Braque was the first living artist to have work exhibited where?",options:["The Louvre","MoMA","The Vatican","The Hermitage"],answer:0},
+      {q:"Gris died young at what age?",options:["30","37","40","45"],answer:1},
+      {q:"Léger's 'mechanical style' after WWI was influenced by his work as:",options:["A factory manager","A stretcher bearer exposed to military equipment","An engineer","A pilot"],answer:1},
+      {q:"Delaunay coined which term for his own color-based abstract style?",options:["Cubism","Orphism/Simultanism","Futurism","Constructivism"],answer:1},
+      {q:"Picasso's longest romantic relationship was with:",options:["Françoise Gilot","Dora Maar","Jacqueline Roque","Olga Khokhlova"],answer:2},
+      {q:"Braque was wounded where in WWI?",options:["His leg","His head (trepanation surgery)","His hand","His shoulder"],answer:1},
+      {q:"Gris moved from Madrid to Paris in which year?",options:["1900","1906","1910","1915"],answer:1},
+      {q:"Léger taught at which famous American design school?",options:["Yale","Parsons","The New Bauhaus in Chicago","RISD"],answer:2},
+      {q:"Delaunay was influenced by which scientist's color theories?",options:["Newton","Eugène Chevreul","Albert Munsell","James Clerk Maxwell"],answer:1},
+      {q:"Picasso's 'Blue Period' was inspired partly by the suicide of his friend:",options:["Braque","Carlos Casagemas","Apollinaire","Max Jacob"],answer:1},
+      {q:"Braque's Cubist style after his WWI injury became:",options:["More violent and abstract","Calmer, more decorative, still Cubist","Photorealistic","Surrealist"],answer:1},
+      {q:"Gris was supported during his early career by which art dealer?",options:["Vollard","Kahnweiler","Durand-Ruel","Bernheim-Jeune"],answer:1},
+      {q:"Léger's post-WWII work focused on themes of:",options:["War trauma","Workers, leisure, and political solidarity","Religious subjects","Pure abstraction"],answer:1},
+      {q:"Delaunay's 'Windows' series used light filtering through what?",options:["Stained glass","Window panes creating color prisms","Curtains","Colored filters he invented"],answer:1},
+      {q:"Picasso created over how many artworks in his lifetime?",options:["5,000","10,000","20,000","30,000+"],answer:3},
+      {q:"Braque's late-career 'Birds' motif appeared in paintings, tapestries, and:",options:["Sculptures","The ceiling of the Louvre's Salle Henri II","Church windows","Jewelry"],answer:1},
+      {q:"Gris is notable for developing Synthetic Cubism's:",options:["Monochromatic palette","From abstraction to subject (rather than subject to abstraction)","Collage technique","Use of sand and texture"],answer:1},
+      {q:"Léger's museum in which city displays a major collection?",options:["Paris","Biot, France (Musée National Fernand Léger)","New York","Berlin"],answer:1},
+      {q:"Delaunay's windows and discs were described by poet Guillaume Apollinaire as:",options:["'Ugly and confusing'","'Pure painting — simultaneous'","'The end of art'","'Pointillist revival'"],answer:1},
+    ]},
+    {title:"Legacy & Influence",questions:[
+      {q:"Cubism directly influenced which design movement of the 1920s–30s?",options:["Arts and Crafts","Art Deco","Bauhaus only","Art Nouveau"],answer:1},
+      {q:"Which early 20th century art movement from Italy was influenced by Cubism?",options:["Dada","Futurism","Surrealism","Vorticism"],answer:1},
+      {q:"Cubism's fragmentation of form influenced which literary technique?",options:["Stream of consciousness","Stream of consciousness and narrative fragmentation in Modernism","Haiku poetry","Epic poetry"],answer:1},
+      {q:"Which architectural style reflects Cubist principles of multiple planes?",options:["Gothic revival","Deconstructivism (e.g., Frank Gehry)","Brutalism","Neoclassicism"],answer:1},
+      {q:"Cubism influenced which design field in typography and posters?",options:["Victorian ornament","Constructivist and Bauhaus graphic design","Art Nouveau illustration","Japanese woodblock design"],answer:1},
+      {q:"Which artist's cut-paper works echo Synthetic Cubism's collage?",options:["Jackson Pollock","Henri Matisse's cut-outs","Robert Rauschenberg","Jasper Johns"],answer:1},
+      {q:"The Cubist approach to multiple perspectives influenced which field of science/philosophy?",options:["String theory","Theories of relativity and non-Euclidean geometry discussions","Evolutionary biology","Quantum mechanics only"],answer:1},
+      {q:"Which fashion designer's work of the 1960s was heavily Cubist-influenced?",options:["Coco Chanel","Yves Saint Laurent","Pierre Cardin","Hubert de Givenchy"],answer:1},
+      {q:"Cubism influenced which aspect of film language?",options:["Slow panning shots","Montage and non-linear editing","Color grading","Sound design"],answer:1},
+      {q:"Which Czech art movement was a direct national variant of Cubism?",options:["Czech Surrealism","Czech Cubism (applied to architecture and furniture)","Czech Minimalism","Czech Abstract art"],answer:1},
+      {q:"Cubism's legacy in popular culture includes which visual style?",options:["Photorealistic video games","Geometric graphic design, logos, and brand identities","Oil painting portraiture","Landscape photography"],answer:1},
+      {q:"Which major museum dedicated entirely to Picasso opened in Paris?",options:["Centre Pompidou","Musée Picasso","Musée d'Orsay","Palais de Tokyo"],answer:1},
+      {q:"Guernica is on permanent display in which Spanish museum?",options:["Prado Museum","Museo Reina Sofía","Thyssen-Bornemisza Museum","Guggenheim Bilbao"],answer:1},
+      {q:"African art's influence on Cubism led to greater recognition of:",options:["African art's aesthetic value and formal complexity","Only its decorative elements","Tribal ritual only","Architecture from Africa"],answer:0},
+      {q:"Léger's Cubism influenced which discipline of 20th-century design?",options:["Furniture and industrial design","Interior decoration only","Fashion only","Photography only"],answer:0},
+      {q:"Which art movement of the 1910s–20s in Eastern Europe was Cubist-influenced?",options:["Socialist Realism","Constructivism","Abstract Expressionism","Art Informel"],answer:1},
+      {q:"Delaunay's color theories influenced which Bauhaus teacher?",options:["Walter Gropius","Paul Klee and Johannes Itten","László Moholy-Nagy","Marcel Breuer"],answer:1},
+      {q:"Cubism's challenge to realistic representation opened the door for:",options:["Return to realism","Abstraction and non-objective art","Hyper-realism","Traditional portraiture"],answer:1},
+      {q:"Braque's influence is most visible in which area of decorative arts?",options:["Ceramics and pottery","Book illustration and typography","Jewelry design","Tapestry and murals"],answer:3},
+      {q:"Which famous architect's angular, fragmented buildings echo Cubist principles?",options:["I.M. Pei","Frank Gehry","Zaha Hadid","Both Gehry and Hadid"],answer:3},
+      {q:"Cubism demonstrated that art could:",options:["Only represent visible reality accurately","Communicate ideas, time, and multiple realities beyond single viewpoints","Only be abstract","Only be geometric"],answer:1},
+      {q:"Which video game aesthetic style is clearly Cubist-influenced?",options:["Voxel/pixel art with geometric block shapes","Photorealistic rendering","Watercolor-style games","Neon noir style"],answer:0},
+      {q:"Gris's legacy is recognized most in which country's art museums?",options:["France","USA","Spain","Germany"],answer:2},
+      {q:"Picasso's estate is estimated to have been worth approximately:",options:["$50 million","$500 million","Over $1 billion at death","$100 million"],answer:2},
+      {q:"Cubism is considered the single most important:",options:["Landscape movement","Influence on 20th-century art, design, and visual culture","Decorative arts style","Photography movement"],answer:1},
+    ]},
+  ],
+};
+
+// Generate placeholder quizzes for other genres
+function generateQuiz(genreId,genreName,artists,quizIndex){
+  const titles=["Origins & History","Techniques & Style","Key Artworks","Artists Deep Dive","Legacy & Influence"];
+  const questions=[];
+  for(let i=0;i<25;i++){
+    const artist=artists[i%artists.length];
+    const a2=artists[(i+1)%artists.length];
+    const a3=artists[(i+2)%artists.length];
+    const a4=artists[(i+3)%artists.length];
+    const correctIdx=i%4;
+    const opts=[a2,a3,a4,artist];
+    opts.splice(correctIdx,0,artist);
+    const finalOpts=opts.slice(0,4);
+    finalOpts[correctIdx]=artist;
+    questions.push({q:`Which ${genreName} artist is known for work #${i+1} in ${titles[quizIndex]}?`,options:finalOpts,answer:correctIdx});
+  }
+  return{title:titles[quizIndex],questions};
+}
+GENRES.forEach(g=>{
+  if(!QUIZZES[g.id])QUIZZES[g.id]=[0,1,2,3,4].map(i=>generateQuiz(g.id,g.name,g.artists,i));
+});
+
+// ══════════════════════════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════════════════════════
+const STORAGE_KEY="artStudyPro_v1";
+function loadProgress(){try{const r=localStorage.getItem(STORAGE_KEY);return r?JSON.parse(r):{}}catch{return{}}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p))}catch{}}
+
+// ══════════════════════════════════════════════════════════════
+// APP STATE
+// ══════════════════════════════════════════════════════════════
+let STATE={
+  screen:"home",          // home|genre|quiz|results|progress
+  genreIdx:null,
+  quizIdx:null,
+  currentQ:0,
+  chosen:null,
+  quizAnswers:[],
+  progress:loadProgress(),
+  resultsTab:"wrong",     // "all"|"wrong"
+};
+
+// ══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════════
+function navigate(screen,extra={}){
+  const app=document.getElementById("app");
+  app.style.opacity="0";
+  app.style.transform="translateY(6px)";
+  setTimeout(()=>{
+    STATE.screen=screen;
+    if("genreIdx"in extra)STATE.genreIdx=extra.genreIdx;
+    if("quizIdx"in extra)STATE.quizIdx=extra.quizIdx;
+    if("answers"in extra)STATE.quizAnswers=extra.answers;
+    STATE.currentQ=0;STATE.chosen=null;
+    if(screen!=="results")STATE.quizAnswers=[];
+    render();
+    app.style.opacity="1";
+    app.style.transform="translateY(0)";
+    window.scrollTo(0,0);
+  },180);
+  app.style.transition="opacity .18s ease,transform .18s ease";
+}
+
+// ══════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════
+function genre(){return STATE.genreIdx!==null?GENRES[STATE.genreIdx]:null}
+function quiz(){const g=genre();return g&&STATE.quizIdx!==null?QUIZZES[g.id]?.[STATE.quizIdx]:null}
+function progressKey(gi,qi){return`${GENRES[gi].id}_${qi}`}
+function gradeFromPct(p){return p>=90?"S":p>=80?"A":p>=70?"B":p>=60?"C":"D"}
+function gradeColor(p){return p>=80?"#22c55e":p>=60?"#f59e0b":"#ef4444"}
+function hex2rgba(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`}
+
+// Artist chip — opens bio modal
+function artistChipHTML(name,color){
+  const a=ARTISTS[name];
+  const textColor=color==="#D4AC0D"?"#1a1a0a":"#fff";
+  return`<button class="artist-chip" style="background:${hex2rgba(color,.15)};color:${color};border:1px solid ${hex2rgba(color,.35)};" onclick="openBio('${name.replace(/'/g,"\\'")}','${color}')">${name} <span class="artist-chip-icon">ℹ</span></button>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// BIO MODAL
+// ══════════════════════════════════════════════════════════════
+function openBio(name,color){
+  const a=ARTISTS[name];
+  if(!a)return;
+  document.getElementById("bio-name").textContent=name;
+  document.getElementById("bio-dates").textContent=a.dates;
+  document.getElementById("bio-text").textContent=a.bio;
+  document.getElementById("bio-sig").textContent=a.significance;
+  document.getElementById("bio-works").textContent=a.works;
+  const pill=document.getElementById("bio-pill");
+  const tc=color==="#D4AC0D"?"#1a1a0a":"#fff";
+  pill.style.cssText=`background:${hex2rgba(color,.15)};color:${color};border:1px solid ${hex2rgba(color,.3)}`;
+
+  // find genre name for pill
+  const g=GENRES.find(g=>g.artists.includes(name)||g.id===STATE.genreIdx?.toString());
+  const genreName=genre()?.name||"";
+  pill.textContent=genreName;
+
+  // links
+  const linksEl=document.getElementById("bio-links");
+  linksEl.innerHTML="";
+  if(a.wiki)linksEl.innerHTML+=`<a class="bio-link" href="${a.wiki}" target="_blank" rel="noopener">🔗 Wikipedia</a>`;
+  if(a.met)linksEl.innerHTML+=`<a class="bio-link" href="${a.met}" target="_blank" rel="noopener">🏛 The Met Collection</a>`;
+  linksEl.innerHTML+=`<a class="bio-link" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(name+' paintings')}" target="_blank" rel="noopener">🖼 Images</a>`;
+
+  document.getElementById("bio-modal").classList.add("open");
+}
+function closeBioModal(e){if(e.target===document.getElementById("bio-modal"))closeBioModalDirect();}
+function closeBioModalDirect(){document.getElementById("bio-modal").classList.remove("open");}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeBioModalDirect();});
+
+// ══════════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════════
+function render(){
+  const app=document.getElementById("app");
+  switch(STATE.screen){
+    case"home":app.innerHTML=renderHome();break;
+    case"genre":app.innerHTML=renderGenre();break;
+    case"quiz":app.innerHTML=renderQuiz();break;
+    case"results":app.innerHTML=renderResults();break;
+    case"progress":app.innerHTML=renderProgress();break;
+  }
+  bindEvents();
+}
+
+// ══════════════════════════════════════════════════════════════
+// HOME
+// ══════════════════════════════════════════════════════════════
+function renderHome(){
+  const prog=STATE.progress;
+  const totalDone=Object.keys(prog).length;
+  const totalPossible=GENRES.length*5;
+  const pct=Math.round((totalDone/totalPossible)*100);
+  return`<div id="home-screen" class="screen">
+    <div class="hero">
+      <h1>Explore <em>Visual Arts</em></h1>
+      <p class="hero-sub">10 movements · 50 artists · deep dives · master art history</p>
+      <div class="overall-bar">
+        <div class="bar-label"><span>Overall Progress</span><span>${totalDone}/${totalPossible} quizzes</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:#e8552d"></div></div>
+      </div>
+    </div>
+    <div class="genre-grid">
+      ${GENRES.map((g,i)=>{
+        const done=[0,1,2,3,4].filter(j=>prog[`${g.id}_${j}`]).length;
+        const p=Math.round((done/5)*100);
+        return`<button class="genre-tile" style="background:${g.color};box-shadow:0 6px 24px ${hex2rgba(g.color,.4)}"
+          onclick="navigate('genre',{genreIdx:${i}})">
+          <span class="genre-emoji">${g.emoji}</span>
+          <div class="genre-tile-name">${g.name}</div>
+          <div class="genre-tile-desc">${g.description}</div>
+          <div class="tile-prog-track"><div class="tile-prog-fill" style="width:${p}%;background:${g.accent}"></div></div>
+          <div class="tile-count">${done}/5 quizzes</div>
+        </button>`;
+      }).join("")}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// GENRE SCREEN
+// ══════════════════════════════════════════════════════════════
+function renderGenre(){
+  const g=genre();
+  if(!g)return"";
+  const quizzes=QUIZZES[g.id]||[];
+  const pi=PERIOD_INFO[g.id]||{period:"",text:""};
+  const prog=STATE.progress;
+
+  return`<div class="page-wrap screen" style="background:linear-gradient(135deg,${hex2rgba(g.color,.12)} 0%,#0e0e18 65%)">
+    <div class="card">
+      <div class="card-pad">
+        <button class="back-btn" onclick="navigate('home')"><span class="arrow">←</span> All Movements</button>
+        <div class="genre-hero">
+          <div class="genre-emoji-big">${g.emoji}</div>
+          <div>
+            <div class="genre-title" style="color:${g.color}">${g.name}</div>
+            <div class="genre-long-desc">${g.description}</div>
+          </div>
+        </div>
+        ${pi.text?`<div class="period-info">
+          <h3>Historical Context · ${pi.period}</h3>
+          ${pi.text}
+        </div>`:""}
+        <div class="artists-section">
+          <h3>Key Artists</h3>
+          <div class="artists-row">
+            ${g.artists.map(a=>artistChipHTML(a,g.color)).join("")}
+          </div>
+          <p style="font-size:11px;color:#aaa;margin-top:8px">Click an artist's name to view biography</p>
+        </div>
+      </div>
+      <div class="card-pad quiz-section">
+        <h2>Choose a Quiz</h2>
+        <div class="quiz-list">
+          ${quizzes.map((qz,i)=>{
+            const key=`${g.id}_${i}`;
+            const done=prog[key];
+            const p=done?Math.round((done.score/done.total)*100):0;
+            return`<div class="quiz-item${done?" done":""}" style="${done?`border-color:${hex2rgba(g.color,.4)};background:${hex2rgba(g.color,.05)}`:""}">
+              <div style="flex:1">
+                <div class="quiz-item-title">Quiz ${i+1}: ${qz.title}</div>
+                <div class="quiz-item-sub">25 questions</div>
+                ${done?`<div class="mini-track"><div class="mini-fill" style="width:${p}%;background:${g.color}"></div></div>
+                <div class="last-score">Last score: ${done.score}/25 (${p}%)</div>`:""}
+              </div>
+              <div class="quiz-actions">
+                <button class="start-btn" style="background:${g.color}"
+                  onclick="startQuiz(${STATE.genreIdx},${i})">${done?"Retake":"Start →"}</button>
+                ${done?`<button class="review-btn-sm"
+                  onclick="viewResults(${STATE.genreIdx},${i})">Results</button>`:""}
+              </div>
+            </div>`;
+          }).join("")}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// QUIZ SCREEN
+// ══════════════════════════════════════════════════════════════
+function renderQuiz(){
+  const g=genre();const qz=quiz();
+  if(!g||!qz)return"";
+  const q=qz.questions[STATE.currentQ];
+  const total=qz.questions.length;
+  const pct=Math.round((STATE.currentQ/total)*100);
+  const chosen=STATE.chosen;
+  const artLink=detectArtworkLink(q.q);
+
+  const opts=q.options.map((opt,i)=>{
+    let cls="opt-btn";
+    if(chosen!==null){
+      if(i===q.answer)cls+=" correct";
+      else if(i===chosen&&chosen!==q.answer)cls+=" wrong";
+    }
+    return`<button class="${cls}" onclick="chooseAnswer(${i})" ${chosen!==null?"disabled":""}>
+      <span class="opt-letter">${["A","B","C","D"][i]}</span>${opt}
+    </button>`;
+  }).join("");
+
+  return`<div class="page-wrap screen" style="background:linear-gradient(135deg,${hex2rgba(g.color,.14)} 0%,#0e0e18 60%)">
+    <div class="quiz-card">
+      <div class="quiz-topbar">
+        <button class="exit-btn" style="background:${hex2rgba(g.color,.12)};color:${g.color}"
+          onclick="navigate('genre',{genreIdx:${STATE.genreIdx}})">← Exit</button>
+        <div class="quiz-meta">
+          <span class="quiz-title-lbl">${qz.title}</span>
+          <span class="q-num">${STATE.currentQ+1} / ${total}</span>
+        </div>
+      </div>
+      <div class="prog-track-q"><div class="prog-fill" style="width:${pct}%;background:${g.color}"></div></div>
+      <div class="question-text">${q.q}</div>
+      ${artLink?`<div class="artwork-hint">🖼 Referenced artwork: <a href="${artLink.url}" target="_blank" rel="noopener">${artLink.title} →</a></div>`:""}
+      <div class="options-grid">${opts}</div>
+      ${chosen!==null?`<div class="next-wrap">
+        <div class="feedback" style="color:${chosen===q.answer?"#22c55e":"#ef4444"}">
+          ${chosen===q.answer?"✓ Correct!":"✗ The correct answer is: "+q.options[q.answer]}
+        </div>
+        <button class="next-btn" style="background:${g.color}" onclick="nextQuestion()">
+          ${STATE.currentQ+1>=total?"See Results →":"Next Question →"}
+        </button>
+      </div>`:""}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// RESULTS SCREEN
+// ══════════════════════════════════════════════════════════════
+function renderResults(){
+  const g=genre();const qz=quiz();
+  if(!g||!qz)return"";
+  const answers=STATE.quizAnswers;
+  const score=answers.filter((a,i)=>a===qz.questions[i].answer).length;
+  const total=qz.questions.length;
+  const pct=Math.round((score/total)*100);
+  const grade=gradeFromPct(pct);
+  const gc=gradeColor(pct);
+  const wrong=answers.filter((a,i)=>a!==qz.questions[i].answer).length;
+  const tab=STATE.resultsTab;
+
+  const questions=tab==="wrong"
+    ?qz.questions.map((q,i)=>({q,i,correct:answers[i]===q.answer})).filter(x=>!x.correct)
+    :qz.questions.map((q,i)=>({q,i,correct:answers[i]===q.answer}));
+
+  const reviewItems=questions.map(({q,i,correct})=>{
+    const artLink=detectArtworkLink(q.q);
+    return`<div class="review-item ${correct?"correct":"wrong"}">
+      <div class="review-item-hdr">
+        <span class="review-q">Q${i+1}: ${q.q}</span>
+        <span class="review-icon">${correct?"✓":"✗"}</span>
+      </div>
+      ${!correct?`<div class="review-correct-pill">✓ Correct: ${q.options[q.answer]}</div>`:""}
+      ${!correct&&answers[i]!==null?`<div class="review-wrong-pill">✗ Your answer: ${q.options[answers[i]]}</div>`:""}
+      ${artLink?`<a class="review-artwork-link" href="${artLink.url}" target="_blank" rel="noopener">🖼 View ${artLink.title} →</a>`:""}
+    </div>`;
+  }).join("");
+
+  return`<div class="page-wrap screen" style="background:linear-gradient(135deg,${hex2rgba(g.color,.14)} 0%,#0e0e18 60%)">
+    <div class="results-card">
+      <div class="results-banner" style="background:${g.color};color:#fff">
+        <div class="grade-ring" style="background:${gc};color:#fff">${grade}</div>
+        <div class="results-score-text">${score}/${total} Correct</div>
+        <div class="results-sub">${qz.title} · ${g.name}</div>
+      </div>
+      <div class="results-stats">
+        <div class="res-stat"><div class="res-stat-num" style="color:#22c55e">${score}</div><div class="res-stat-lbl">Correct</div></div>
+        <div class="res-stat"><div class="res-stat-num" style="color:#ef4444">${wrong}</div><div class="res-stat-lbl">Wrong</div></div>
+        <div class="res-stat"><div class="res-stat-num" style="color:${gc}">${pct}%</div><div class="res-stat-lbl">Score</div></div>
+        <div class="res-stat"><div class="res-stat-num" style="color:#888">${grade}</div><div class="res-stat-lbl">Grade</div></div>
+      </div>
+      <div class="results-tabs">
+        <button class="tab-btn${tab==="wrong"?" active":""}" onclick="setResultsTab('wrong')">Review Wrong (${wrong})</button>
+        <button class="tab-btn${tab==="all"?" active":""}" onclick="setResultsTab('all')">All Questions (${total})</button>
+      </div>
+      <div class="review-list">
+        ${questions.length===0?`<div style="text-align:center;padding:32px;color:#aaa;font-size:15px">🎉 Perfect score! All answers correct.</div>`:reviewItems}
+      </div>
+      <div class="results-footer">
+        <button style="background:${g.color};color:#fff" onclick="startQuiz(${STATE.genreIdx},${STATE.quizIdx})">Retake Quiz</button>
+        <button style="background:#f0f0f0;color:#333" onclick="navigate('genre',{genreIdx:${STATE.genreIdx}})">Back to Quizzes</button>
+        <button style="background:#1a1a2e;color:#fff" onclick="navigate('home')">Home</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// PROGRESS SCREEN
+// ══════════════════════════════════════════════════════════════
+function renderProgress(){
+  const prog=STATE.progress;
+  const total=GENRES.length*5;
+  const done=Object.keys(prog).length;
+  const totalScore=Object.values(prog).reduce((s,p)=>s+(p.score||0),0);
+  const totalPoss=done*25;
+  const avgPct=totalPoss>0?Math.round((totalScore/totalPoss)*100):0;
+
+  const rows=GENRES.map((g,gi)=>{
+    const dots=[0,1,2,3,4].map(i=>{
+      const d=prog[`${g.id}_${i}`];
+      const p=d?Math.round((d.score/25)*100):0;
+      if(d)return`<button class="quiz-dot done" style="background:${g.color};color:#fff"
+        onclick="viewResults(${gi},${i})" title="View results">${p}%</button>`;
+      return`<button class="quiz-dot undone">${i+1}</button>`;
+    }).join("");
+    const doneCount=[0,1,2,3,4].filter(i=>prog[`${g.id}_${i}`]).length;
+    return`<div class="genre-prog-item">
+      <div class="genre-prog-hdr">
+        <span style="font-size:20px">${g.emoji}</span>
+        <span style="font-weight:700;font-size:14px">${g.name}</span>
+        <span class="genre-prog-count">${doneCount}/5</span>
+      </div>
+      <div class="quiz-dots-row">${dots}</div>
+    </div>`;
+  }).join("");
+
+  return`<div class="page-wrap screen" style="background:linear-gradient(135deg,rgba(29,53,87,.15) 0%,#0e0e18 60%)">
+    <div class="progress-card">
+      <button class="back-btn" onclick="navigate('home')"><span class="arrow">←</span> Home</button>
+      <h2 style="font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:0">My Progress</h2>
+      <div class="stat-row-prog">
+        <div class="stat-box" style="background:#fee2e2;color:#991b1b">
+          <div class="stat-num">${done}</div><div class="stat-lbl">Completed</div>
+        </div>
+        <div class="stat-box" style="background:#e0f2fe;color:#0369a1">
+          <div class="stat-num">${total-done}</div><div class="stat-lbl">Remaining</div>
+        </div>
+        <div class="stat-box" style="background:#fef9c3;color:#854d0e">
+          <div class="stat-num">${avgPct}%</div><div class="stat-lbl">Avg Score</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#aaa;margin-bottom:12px">Click a completed quiz dot to review results</p>
+      <div class="genre-prog-list">${rows}</div>
+      <button class="reset-btn-prog" onclick="resetProgress()">🗑 Reset All Progress</button>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// EVENT BINDING & ACTIONS
+// ══════════════════════════════════════════════════════════════
+function bindEvents(){}  // events attached via inline onclick
+
+function startQuiz(gi,qi){
+  STATE.genreIdx=gi;
+  STATE.quizIdx=qi;
+  STATE.currentQ=0;
+  STATE.chosen=null;
+  STATE.quizAnswers=[];
+  const app=document.getElementById("app");
+  app.style.opacity="0";app.style.transform="translateY(6px)";
+  setTimeout(()=>{
+    STATE.screen="quiz";render();
+    app.style.opacity="1";app.style.transform="translateY(0)";
+    window.scrollTo(0,0);
+  },180);
+  app.style.transition="opacity .18s ease,transform .18s ease";
+}
+
+function chooseAnswer(idx){
+  if(STATE.chosen!==null)return;
+  STATE.chosen=idx;
+  render();
+}
+
+function nextQuestion(){
+  const newAnswers=[...STATE.quizAnswers,STATE.chosen];
+  const qz=quiz();
+  if(STATE.currentQ+1>=qz.questions.length){
+    const score=newAnswers.filter((a,i)=>a===qz.questions[i].answer).length;
+    const key=progressKey(STATE.genreIdx,STATE.quizIdx);
+    STATE.progress[key]={score,total:qz.questions.length,answers:newAnswers,date:Date.now()};
+    saveProgress(STATE.progress);
+    STATE.quizAnswers=newAnswers;
+    STATE.resultsTab="wrong";
+    const app=document.getElementById("app");
+    app.style.opacity="0";app.style.transform="translateY(6px)";
+    setTimeout(()=>{
+      STATE.screen="results";render();
+      app.style.opacity="1";app.style.transform="translateY(0)";
+      window.scrollTo(0,0);
+    },180);
+    app.style.transition="opacity .18s ease,transform .18s ease";
+  } else {
+    STATE.quizAnswers=newAnswers;
+    STATE.currentQ++;
+    STATE.chosen=null;
+    render();
+  }
+}
+
+function viewResults(gi,qi){
+  const key=`${GENRES[gi].id}_${qi}`;
+  const saved=STATE.progress[key];
+  if(!saved)return;
+  STATE.genreIdx=gi;
+  STATE.quizIdx=qi;
+  STATE.quizAnswers=saved.answers;
+  STATE.resultsTab="wrong";
+  navigate("results",{genreIdx:gi,quizIdx:qi,answers:saved.answers});
+}
+
+function setResultsTab(tab){
+  STATE.resultsTab=tab;
+  render();
+}
+
+function resetProgress(){
+  if(confirm("Reset all progress? This cannot be undone.")){
+    STATE.progress={};saveProgress({});render();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+const app=document.getElementById("app");
+app.style.transition="opacity .18s ease,transform .18s ease";
+render();
+</script>
+</body>
+</html>
